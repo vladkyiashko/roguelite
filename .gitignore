@@ -1,0 +1,13 @@
+/Temp
+/obj
+/Library
+/ProjectBuilds
+/AssetBundles
+/.vscode
+/Logs
+/UserSettings
+*.csproj
+*.unityproj
+*.sln
+Assets/StreamingAssets
+Assets/StreamingAssets.meta
