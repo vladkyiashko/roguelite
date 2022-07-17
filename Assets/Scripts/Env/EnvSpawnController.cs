@@ -8,13 +8,13 @@ public class EnvSpawnController : MonoBehaviour
 {
     [SerializeField] private int ZoneSize;
     [SerializeField] private Transform PlayerTransform;
-    [SerializeField] private Zone[] Zones;
-    private DynamicRandomSelector<Zone> ZoneSelector;
+    [SerializeField] private GameObjectWeightInfo[] Zones;
+    private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private Vector2 ZoneCenterOffset;
     private Dictionary<Vector2Int, EnvSpawnZone> ZoneInstanceByPositionIndex = new Dictionary<Vector2Int, EnvSpawnZone>();
     private readonly Vector2Int[] PositionIndexes = new Vector2Int[] 
     {
-        Vector2Int.zero,
+        new Vector2Int(0,0),
         new Vector2Int(0,1),
         new Vector2Int(0,2),
         new Vector2Int(1,0),
@@ -25,6 +25,7 @@ public class EnvSpawnController : MonoBehaviour
         new Vector2Int(2,2)
     };
     private Dictionary<Vector2Int, Vector2> PositionOffsetsByPositionIndexes;
+    public Action<EnvSpawnZone> OnEnvSpawnZoneInstantiated;
 
     private void Awake()
     {
@@ -43,12 +44,12 @@ public class EnvSpawnController : MonoBehaviour
             {PositionIndexes[8], new Vector2(ZoneSize, -ZoneSize) + ZoneCenterOffset}
         };
 
-        ZoneSelector = new DynamicRandomSelector<Zone>();
+        Selector = new DynamicRandomSelector<GameObjectWeightInfo>();
         for (int i = 0; i < Zones.Length; i++)
         {
-            ZoneSelector.Add(Zones[i], Zones[i].Weight);
+            Selector.Add(Zones[i], Zones[i].Weight);
         }
-        ZoneSelector.Build();
+        Selector.Build();
     }
 
     private void Start()
@@ -69,14 +70,20 @@ public class EnvSpawnController : MonoBehaviour
 
     private EnvSpawnZone InstantiateZone(Vector2 position)
     {
-        Zone randomZone = ZoneSelector.SelectRandomItem();
-        EnvSpawnZone envSpawnZoneInstance = LocalObjectPool.Instantiate(randomZone.Prefab).GetComponent<EnvSpawnZone>();
+        GameObjectWeightInfo zone = Selector.SelectRandomItem();
+        EnvSpawnZone envSpawnZoneInstance = LocalObjectPool.Instantiate(zone.Prefab).GetComponent<EnvSpawnZone>();
         envSpawnZoneInstance.GetTransform.position = position;
-        envSpawnZoneInstance.OnTriggerEnter += OnEnter;
-        return envSpawnZoneInstance;
-    }
+        envSpawnZoneInstance.OnTriggerPlayerEnter = OnPlayerEnter;
+        
+        if (OnEnvSpawnZoneInstantiated != null)
+        {
+           OnEnvSpawnZoneInstantiated.Invoke(envSpawnZoneInstance);
+        }
 
-    private void OnEnter(EnvSpawnZone envSpawnZone)
+        return envSpawnZoneInstance;
+    }    
+
+    private void OnPlayerEnter(EnvSpawnZone envSpawnZone)
     {
         Vector2Int positionIndex = ZoneInstanceByPositionIndex.FirstOrDefault(x => x.Value.GetTransform.position == envSpawnZone.GetTransform.position).Key;
 
@@ -99,7 +106,6 @@ public class EnvSpawnController : MonoBehaviour
             {
                 Vector2Int newPositionIndex = zoneKeyValuePair.Key - positionIndexDiff;
                 newZoneInstanceByPositionIndex.Add(newPositionIndex, zoneKeyValuePair.Value);
-                zoneKeyValuePair.Value.gameObject.name = newPositionIndex.ToString(); // TODO tmp?
             }
         }
 
@@ -108,19 +114,11 @@ public class EnvSpawnController : MonoBehaviour
         {
             if (!newZoneInstanceByPositionIndex.ContainsKey(PositionIndexes[i]))
             {
-                EnvSpawnZone zoneInstance = InstantiateZone(GetZonePosition(PositionIndexes[i], positionCenter));
-                zoneInstance.gameObject.name = PositionIndexes[i].ToString(); // TODO tmp?
+                EnvSpawnZone zoneInstance = InstantiateZone(GetZonePosition(PositionIndexes[i], positionCenter));                
                 newZoneInstanceByPositionIndex.Add(PositionIndexes[i], zoneInstance);
             }
         }        
 
         ZoneInstanceByPositionIndex = new Dictionary<Vector2Int, EnvSpawnZone>(newZoneInstanceByPositionIndex);
-    }
-
-    [Serializable]
-    public struct Zone
-    {
-        public GameObject Prefab;
-        public int Weight;
     }
 }
