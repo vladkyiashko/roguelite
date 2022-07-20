@@ -12,18 +12,16 @@ public class MobSpawnController : MonoBehaviour
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private List<Transform> MobInstances = new List<Transform>();
     private Coroutine SpawnLoopCoroutine;
-    private Vector3 GetSpawnPosition
-    {
-        get
-        {
-            return Vector3.zero; // todo implement
-        }
-    }
+    private Vector3 GetSpawnPosition => EnvSpawnController.GetRandomNotVisiblePosition();
 
     private void Awake()
     {
         EnvSpawnController.OnEnvSpawnZoneInstantiated += OnEnvSpawnZoneInstantiated;
+        InitSelector();
+    }
 
+    private void InitSelector()
+    {
         Selector = new DynamicRandomSelector<GameObjectWeightInfo>();
         for (int i = 0; i < Mobs.Length; i++)
         {
@@ -34,7 +32,7 @@ public class MobSpawnController : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (EnvSpawnController != null)
+        if (EnvSpawnController != null)            
         {
             EnvSpawnController.OnEnvSpawnZoneInstantiated -= OnEnvSpawnZoneInstantiated;
         }        
@@ -78,6 +76,7 @@ public class MobSpawnController : MonoBehaviour
     {
         if (!envSpawnZone.gameObject.activeInHierarchy)
         {
+            Debug.LogError("despawn " + mob + " because " + envSpawnZone.gameObject + " is inactive");
             LocalObjectPool.Destroy(mob);
             MobInstances.Remove(mob.transform);
         }
