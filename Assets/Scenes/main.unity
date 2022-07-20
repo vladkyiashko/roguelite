@@ -228,12 +228,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968b550ad66ca5b0a8b95c4d92742110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ZoneSize: 10
+  ZoneSizeDimensions: {x: 10, y: 5}
   PlayerTransform: {fileID: 1427016427}
   Zones:
-  - Prefab: {fileID: 4503860094781467935, guid: 72c3672ceea36ac6ba54d7e5e3d6dc14, type: 3}
+  - Prefab: {fileID: 4503860094781467935, guid: 726f39e6d8e46eff1a9e4ecef8e19cd2, type: 3}
     Weight: 1
-  - Prefab: {fileID: 4503860094781467935, guid: e7e96330c260559779a77566eaa07a04, type: 3}
+  - Prefab: {fileID: 4503860094781467935, guid: 10c5a0a8900df1fd2afc67df658e467e, type: 3}
     Weight: 1
 --- !u!4 &145213810
 Transform:
@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialSpawnCount: 5
-  SpawnDelay: 60
+  SpawnDelay: 9999
   Mobs:
   - Prefab: {fileID: 3234399648206545692, guid: 5da61e7b30286d9aa93b6e46414e096d, type: 3}
     Weight: 1

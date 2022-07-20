@@ -69,16 +69,14 @@ public class MobSpawnController : MonoBehaviour
 
     private void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)
     {
-        envSpawnZone.OnTriggerMobExit = OnMobExit;
+        envSpawnZone.OnTriggerMobExit = OnMobExitZone;
     }
 
-    private void OnMobExit(EnvSpawnZone envSpawnZone, GameObject mob)
+    private void OnMobExitZone(EnvSpawnZone envSpawnZone, GameObject mob)
     {
         if (!envSpawnZone.gameObject.activeInHierarchy)
         {
-            Debug.LogError("despawn " + mob + " because " + envSpawnZone.gameObject + " is inactive");
-            LocalObjectPool.Destroy(mob);
-            MobInstances.Remove(mob.transform);
+            mob.transform.position = GetSpawnPosition;
         }
     }
 }
