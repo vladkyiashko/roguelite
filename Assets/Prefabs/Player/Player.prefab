@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementJoystick: {fileID: 0}
-  PlayerSpeed: 2
+  Speed: 2
   RB: {fileID: 1761782525319597568}
 --- !u!61 &1761782525319597572
 BoxCollider2D:

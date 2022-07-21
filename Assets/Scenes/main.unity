@@ -652,12 +652,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd75e5ececd9c49a84fa5d8204ffc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialSpawnCount: 5
+  InitialSpawnCount: 1
   SpawnDelay: 9999
   Mobs:
   - Prefab: {fileID: 3234399648206545692, guid: 5da61e7b30286d9aa93b6e46414e096d, type: 3}
     Weight: 1
   EnvSpawnController: {fileID: 145213809}
+  PlayerTransform: {fileID: 1427016427}
 --- !u!4 &1587603386
 Transform:
   m_ObjectHideFlags: 0

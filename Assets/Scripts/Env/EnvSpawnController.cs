@@ -18,6 +18,7 @@ public class EnvSpawnController : MonoBehaviour
     private Vector2Int MiddlePositionIndex;
     public Action<EnvSpawnZone> OnEnvSpawnZoneInstantiated;
     private List<Vector2Int> NotVisiblePositionIndexes;
+    private Dictionary<GameObject, EnvSpawnZone> CachedEnvSpawnZoneByGameObject = new Dictionary<GameObject, EnvSpawnZone>();
 
     private void Awake()
     {        
@@ -104,16 +105,25 @@ public class EnvSpawnController : MonoBehaviour
     private EnvSpawnZone InstantiateZone(Vector2 position)
     {
         GameObjectWeightInfo zone = Selector.SelectRandomItem();
-        EnvSpawnZone envSpawnZoneInstance = LocalObjectPool.Instantiate(zone.Prefab).GetComponent<EnvSpawnZone>();
-        envSpawnZoneInstance.GetTransform.position = position;
-        envSpawnZoneInstance.OnTriggerPlayerEnter = OnPlayerEnter;
+
+        GameObject zoneInstance = LocalObjectPool.Instantiate(zone.Prefab);
+        EnvSpawnZone envSpawnZone = null;
+        if (!CachedEnvSpawnZoneByGameObject.ContainsKey(zoneInstance))
+        {
+            envSpawnZone = zoneInstance.GetComponent<EnvSpawnZone>();
+            CachedEnvSpawnZoneByGameObject.Add(zoneInstance, envSpawnZone);
+        }
+        envSpawnZone = CachedEnvSpawnZoneByGameObject[zoneInstance];
+
+        envSpawnZone.GetTransform.position = position;
+        envSpawnZone.OnTriggerPlayerEnter = OnPlayerEnter;
         
         if (OnEnvSpawnZoneInstantiated != null)
         {
-           OnEnvSpawnZoneInstantiated.Invoke(envSpawnZoneInstance);
+           OnEnvSpawnZoneInstantiated.Invoke(envSpawnZone);
         }
 
-        return envSpawnZoneInstance;
+        return envSpawnZone;
     }    
 
     private void OnPlayerEnter(EnvSpawnZone envSpawnZone)

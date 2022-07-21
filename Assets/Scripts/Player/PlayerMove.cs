@@ -1,23 +1,14 @@
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : AbstractMove
 {
     [SerializeField] private MovementJoystick MovementJoystick;
-    [SerializeField] private float PlayerSpeed;
-    [SerializeField] private Rigidbody2D RB;
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        Vector2 moveDir = MovementJoystick.JoystickVec != Vector2.zero ? MovementJoystick.JoystickVec : GetKeyboardMoveVec();
+        MoveDir = MovementJoystick.JoystickVec != Vector2.zero ? MovementJoystick.JoystickVec : GetKeyboardMoveVec();
 
-        if (moveDir != Vector2.zero)
-        {
-            RB.velocity = new Vector2(moveDir.x * PlayerSpeed, moveDir.y * PlayerSpeed);
-        }
-        else
-        {
-            RB.velocity = Vector2.zero;
-        }
+        base.FixedUpdate();
     }
 
     private Vector2 GetKeyboardMoveVec()
