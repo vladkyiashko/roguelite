@@ -659,6 +659,7 @@ MonoBehaviour:
     Weight: 1
   EnvSpawnController: {fileID: 145213809}
   PlayerTransform: {fileID: 1427016427}
+  PlayerHealth: {fileID: 1610369469}
 --- !u!4 &1587603386
 Transform:
   m_ObjectHideFlags: 0
@@ -674,6 +675,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1610369469 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3734601071120700290, guid: 75340c31915a5f2baaa9b69a5cd2c55a, type: 3}
+  m_PrefabInstance: {fileID: 1761782524027389161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 392b4bab473b9197d9485b57e1ce3bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1721019554
 GameObject:
   m_ObjectHideFlags: 0

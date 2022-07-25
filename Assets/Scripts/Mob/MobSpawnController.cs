@@ -9,12 +9,13 @@ public class MobSpawnController : MonoBehaviour
     [SerializeField] private float SpawnDelay;
     [SerializeField] private GameObjectWeightInfo[] Mobs;
     [SerializeField] private EnvSpawnController EnvSpawnController;
-    [SerializeField] private Transform PlayerTransform;        
+    [SerializeField] private Transform PlayerTransform;
+    [SerializeField] private PlayerHealth PlayerHealth;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
-    private List<Transform> MobInstances = new List<Transform>();
+    private List<MobHolder> MobInstances = new List<MobHolder>();
     private Coroutine SpawnLoopCoroutine;
     private Vector3 GetSpawnPosition => EnvSpawnController.GetRandomNotVisiblePosition();
-    private Dictionary<GameObject, MobMove> CachedMobMoveByGameObject = new Dictionary<GameObject, MobMove>();
+    private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new Dictionary<GameObject, MobHolder>();
 
     private void Awake()
     {
@@ -66,17 +67,18 @@ public class MobSpawnController : MonoBehaviour
         GameObjectWeightInfo mob = Selector.SelectRandomItem();
 
         GameObject mobInstance = LocalObjectPool.Instantiate(mob.Prefab);
-        MobMove mobMove = null;
-        if (!CachedMobMoveByGameObject.ContainsKey(mobInstance))        
+        MobHolder mobHolder = null;
+        if (!CachedMobHolderByGameObject.ContainsKey(mobInstance))        
         {
-            mobMove = mobInstance.GetComponent<MobMove>();
-            CachedMobMoveByGameObject.Add(mobInstance, mobMove);
+            mobHolder = mobInstance.GetComponent<MobHolder>();
+            CachedMobHolderByGameObject.Add(mobInstance, mobHolder);
+            mobHolder.GetMobTouchDamage.PlayerHealth = PlayerHealth;
         }
 
-        mobMove = CachedMobMoveByGameObject[mobInstance];
-        mobMove.Target = PlayerTransform;
-        mobMove.GetTransform.position = GetSpawnPosition;
-        MobInstances.Add(mobMove.GetTransform);
+        mobHolder = CachedMobHolderByGameObject[mobInstance];
+        mobHolder.GetMobMove.Target = PlayerTransform;
+        mobHolder.GetTransform.position = GetSpawnPosition;
+        MobInstances.Add(mobHolder);
     }
 
     private void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)
@@ -88,7 +90,7 @@ public class MobSpawnController : MonoBehaviour
     {
         if (!envSpawnZone.gameObject.activeInHierarchy)
         {
-            CachedMobMoveByGameObject[mob].GetTransform.position = GetSpawnPosition;
+            CachedMobHolderByGameObject[mob].GetTransform.position = GetSpawnPosition;
         }
     }
 }
