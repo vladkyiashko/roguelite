@@ -16,7 +16,7 @@ public class EnvSpawnController : MonoBehaviour
     private Vector2Int[] PositionIndexes;
     private Dictionary<Vector2Int, Vector2> PositionOffsetsByPositionIndexes;
     private Vector2Int MiddlePositionIndex;
-    public Action<EnvSpawnZone> OnEnvSpawnZoneInstantiated;
+    public event Action<EnvSpawnZone> OnEnvSpawnZoneInstantiated;    
     private List<Vector2Int> NotVisiblePositionIndexes;
     private Dictionary<GameObject, EnvSpawnZone> CachedEnvSpawnZoneByGameObject = new Dictionary<GameObject, EnvSpawnZone>();
 
