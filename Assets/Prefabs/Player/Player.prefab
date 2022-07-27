@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 2
   RB: {fileID: 1761782525319597568}
+  Sprite: {fileID: 1761782524992367462}
   MovementJoystick: {fileID: 0}
 --- !u!114 &3734601071120700290
 MonoBehaviour:

@@ -131,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1.5
   RB: {fileID: 7553607540146644748}
+  Sprite: {fileID: 4747139907020917287}
   Transform: {fileID: 3720808744207008119}
 --- !u!61 &6890353468434102916
 BoxCollider2D:
