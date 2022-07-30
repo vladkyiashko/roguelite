@@ -7,11 +7,14 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private BasePlayerAttack[] AttackPrefabs;
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private AbstractMove PlayerMove;
+    [SerializeField] private GameObject DamageTextPrefab;
+    [SerializeField] private Transform WorldSpaceCanvasTransform;
     private Vector3 LeftScale = new(-1, 1, 1);
     private List<BasePlayerAttack> ActiveAttacks = new();
     private Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
     private Dictionary<GameObject, BasePlayerAttack> CachedAttackByGameObject = new();
     private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
+    private Dictionary<GameObject, DamageTextHolder> CachedDamageTextByGameObject = new();
 
     private void Start()
     {
@@ -58,5 +61,15 @@ public class PlayerAttackController : MonoBehaviour
         {
             mobHolder.GetMobMove.Stun(attack.StunWaitForSeconds);
         }
+
+        GameObject damageTextInstance = LocalObjectPool.Instantiate(DamageTextPrefab);
+        if (!CachedDamageTextByGameObject.ContainsKey(damageTextInstance))
+        {
+            CachedDamageTextByGameObject.Add(
+                    damageTextInstance, damageTextInstance.GetComponent<DamageTextHolder>());
+        }
+        CachedDamageTextByGameObject[damageTextInstance].GetTransform.SetParent(WorldSpaceCanvasTransform);
+        CachedDamageTextByGameObject[damageTextInstance].GetTransform.position = mobHolder.GetTransform.position;
+        CachedDamageTextByGameObject[damageTextInstance].GetText.text = attack.GetDamage.ToString();
     }
 }
