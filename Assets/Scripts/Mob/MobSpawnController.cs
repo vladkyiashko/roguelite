@@ -12,7 +12,6 @@ public class MobSpawnController : MonoBehaviour
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private PlayerHealth PlayerHealth;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
-    private List<MobHolder> MobInstances = new List<MobHolder>();
     private Coroutine SpawnLoopCoroutine;
     private Vector3 GetSpawnPosition => EnvSpawnController.GetRandomNotVisiblePosition();
     private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new Dictionary<GameObject, MobHolder>();
@@ -67,18 +66,13 @@ public class MobSpawnController : MonoBehaviour
         GameObjectWeightInfo mob = Selector.SelectRandomItem();
 
         GameObject mobInstance = LocalObjectPool.Instantiate(mob.Prefab);
-        MobHolder mobHolder = null;
-        if (!CachedMobHolderByGameObject.ContainsKey(mobInstance))        
+        if (!CachedMobHolderByGameObject.ContainsKey(mobInstance))
         {
-            mobHolder = mobInstance.GetComponent<MobHolder>();
-            CachedMobHolderByGameObject.Add(mobInstance, mobHolder);
-            mobHolder.GetMobTouchDamage.PlayerHealth = PlayerHealth;
+            CachedMobHolderByGameObject.Add(mobInstance, mobInstance.GetComponent<MobHolder>());
+            CachedMobHolderByGameObject[mobInstance].GetMobTouchDamage.PlayerHealth = PlayerHealth;
+            CachedMobHolderByGameObject[mobInstance].GetMobMove.Target = PlayerTransform;
         }
-
-        mobHolder = CachedMobHolderByGameObject[mobInstance];
-        mobHolder.GetMobMove.Target = PlayerTransform;
-        mobHolder.GetTransform.position = GetSpawnPosition;
-        MobInstances.Add(mobHolder);
+        CachedMobHolderByGameObject[mobInstance].GetTransform.position = GetSpawnPosition;
     }
 
     private void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)

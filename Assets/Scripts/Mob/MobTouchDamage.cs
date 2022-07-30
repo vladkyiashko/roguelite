@@ -18,7 +18,7 @@ public class MobTouchDamage : MonoBehaviour
     {        
         if (other.gameObject.tag == Consts.PlayerTag)
         {
-            PlayerHealth.Damage(Damage);
+            PlayerHealth.DamageOverTime(Damage);
         }
     }
 

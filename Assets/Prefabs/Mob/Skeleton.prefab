@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1005226271672710012}
   - component: {fileID: 4418874329870803173}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: TouchCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 6890353468434102916}
   - component: {fileID: -2152890245813175898}
   - component: {fileID: -2600921697406234232}
+  - component: {fileID: 104554511087964461}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Mob
@@ -188,6 +189,22 @@ MonoBehaviour:
   MobMove: {fileID: 948919739942694656}
   Transform: {fileID: 3720808744207008119}
   MobTouchDamage: {fileID: -2152890245813175898}
+  MobHealth: {fileID: 104554511087964461}
+  Rigidbody: {fileID: 7553607540146644748}
+--- !u!114 &104554511087964461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234399648206545692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032938c12f2412c21b8ea70d1ece0eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 10
+  CurrentHealth: 0
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0

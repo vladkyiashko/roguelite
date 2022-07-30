@@ -107,24 +107,17 @@ public class EnvSpawnController : MonoBehaviour
         GameObjectWeightInfo zone = Selector.SelectRandomItem();
 
         GameObject zoneInstance = LocalObjectPool.Instantiate(zone.Prefab);
-        EnvSpawnZone envSpawnZone = null;
         if (!CachedEnvSpawnZoneByGameObject.ContainsKey(zoneInstance))
         {
-            envSpawnZone = zoneInstance.GetComponent<EnvSpawnZone>();
-            CachedEnvSpawnZoneByGameObject.Add(zoneInstance, envSpawnZone);
+            CachedEnvSpawnZoneByGameObject.Add(zoneInstance, zoneInstance.GetComponent<EnvSpawnZone>());
+            CachedEnvSpawnZoneByGameObject[zoneInstance].OnTriggerPlayerEnter += OnPlayerEnter;
         }
-        envSpawnZone = CachedEnvSpawnZoneByGameObject[zoneInstance];
+        CachedEnvSpawnZoneByGameObject[zoneInstance].GetTransform.position = position;
 
-        envSpawnZone.GetTransform.position = position;
-        envSpawnZone.OnTriggerPlayerEnter = OnPlayerEnter;
-        
-        if (OnEnvSpawnZoneInstantiated != null)
-        {
-           OnEnvSpawnZoneInstantiated.Invoke(envSpawnZone);
-        }
+        OnEnvSpawnZoneInstantiated?.Invoke(CachedEnvSpawnZoneByGameObject[zoneInstance]);
 
-        return envSpawnZone;
-    }    
+        return CachedEnvSpawnZoneByGameObject[zoneInstance];
+    }
 
     private void OnPlayerEnter(EnvSpawnZone envSpawnZone)
     {

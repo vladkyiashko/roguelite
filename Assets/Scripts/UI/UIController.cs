@@ -8,12 +8,22 @@ public class UIController : MonoBehaviour
 
     private void Awake()
     {
-        PlayerHealth.OnHealthPercentChanged += OnHealthPercentChanged; 
+        PlayerHealth.OnHealthPercentChanged += OnHealthPercentChanged;
     }
 
     private void OnDestroy()
     {
-        PlayerHealth.OnHealthPercentChanged -= OnHealthPercentChanged; 
+        PlayerHealth.OnHealthPercentChanged -= OnHealthPercentChanged;
+    }
+
+    public void OnPauseButtonClick()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void OnResumeButtonClick()
+    {
+        Time.timeScale = 1;
     }
 
     private void OnHealthPercentChanged(float health)
