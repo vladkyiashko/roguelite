@@ -205,6 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 10
   CurrentHealth: 0
+  SpriteRenderer: {fileID: 4747139907020917287}
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ public abstract class AbstractHealth : MonoBehaviour
         CommonDamage(damage*Time.deltaTime);
     }
 
-    private void CommonDamage(float damage)
+    protected virtual void CommonDamage(float damage)
     {
         if (CurrentHealth <= 0)
         {
