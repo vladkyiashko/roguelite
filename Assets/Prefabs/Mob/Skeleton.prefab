@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: -2152890245813175898}
   - component: {fileID: -2600921697406234232}
   - component: {fileID: 104554511087964461}
+  - component: {fileID: 6913008773946833589}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Mob
@@ -133,6 +134,37 @@ MonoBehaviour:
   Speed: 1.5
   RB: {fileID: 7553607540146644748}
   Sprite: {fileID: 4747139907020917287}
+  Events:
+    OnMoveStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6913008773946833589}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -281135240
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnMoveStop:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6913008773946833589}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -601574123
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   Transform: {fileID: 3720808744207008119}
 --- !u!61 &6890353468434102916
 BoxCollider2D:
@@ -174,6 +206,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 1
   MobMove: {fileID: 948919739942694656}
+  Events:
+    OnAttack:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6913008773946833589}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1203776827
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &-2600921697406234232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +254,26 @@ MonoBehaviour:
   MaxHealth: 10
   CurrentHealth: 0
   SpriteRenderer: {fileID: 4747139907020917287}
+--- !u!95 &6913008773946833589
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234399648206545692}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b6a38e9d1200dda469b8795d81bd6d1c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0

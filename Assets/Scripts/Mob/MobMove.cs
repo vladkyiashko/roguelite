@@ -29,12 +29,7 @@ public class MobMove : AbstractMove
 
     protected override void FixedUpdate()
     {
-        if (Target == null || Stunned)
-        {
-            return;
-        }
-
-        MoveDir = (Target.position - transform.position).normalized;
+        MoveDir = Target == null || Stunned ? Vector3.zero : (Target.position - transform.position).normalized;
 
         base.FixedUpdate();
     }
