@@ -7,6 +7,7 @@ public abstract class AbstractMove : MonoBehaviour
     [SerializeField] protected float Speed;
     [SerializeField] protected Rigidbody2D RB;
     [SerializeField] protected SpriteRenderer Sprite;
+    [SerializeField] protected AbstractHealth Health;
     [SerializeField] protected MoveEvents Events;
     protected Vector3 MoveDir;
     public FaceDir CurrentFaceDir { get; private set; }
@@ -14,6 +15,11 @@ public abstract class AbstractMove : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (Health.GetCurrentHealth == 0)
+        {
+            return;
+        }
+
         if (MoveDir == Vector3.zero)
         {
             if (IsMoving)

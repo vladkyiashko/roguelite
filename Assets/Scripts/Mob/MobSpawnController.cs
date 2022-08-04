@@ -71,8 +71,14 @@ public class MobSpawnController : MonoBehaviour
             CachedMobHolderByGameObject.Add(mobInstance, mobInstance.GetComponent<MobHolder>());
             CachedMobHolderByGameObject[mobInstance].GetMobTouchDamage.PlayerHealth = PlayerHealth;
             CachedMobHolderByGameObject[mobInstance].GetMobMove.Target = PlayerTransform;
+            CachedMobHolderByGameObject[mobInstance].GetMobHealth.OnDeathAnimComplete += OnMobDeathAnimComplete;
         }
         CachedMobHolderByGameObject[mobInstance].GetTransform.position = GetSpawnPosition;
+    }
+
+    private void OnMobDeathAnimComplete(GameObject mobGO)
+    {
+        LocalObjectPool.Destroy(mobGO);
     }
 
     private void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)

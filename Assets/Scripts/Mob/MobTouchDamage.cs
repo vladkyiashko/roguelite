@@ -7,6 +7,7 @@ public class MobTouchDamage : MonoBehaviour
     [SerializeField] private float Damage;
     [SerializeField] private MobMove MobMove;
     [SerializeField] private DamageEvents Events;
+    [SerializeField] private AbstractHealth Health;
     public PlayerHealth PlayerHealth { get; set; }
 
     private void OnEnable()
@@ -19,7 +20,7 @@ public class MobTouchDamage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == Consts.PlayerTag)
+        if (other.gameObject.tag == Consts.PlayerTag && Health.GetCurrentHealth > 0)
         {
             MobMove.enabled = false;
             MobMove.IsMoving = false;
@@ -29,7 +30,7 @@ public class MobTouchDamage : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.tag == Consts.PlayerTag)
+        if (other.gameObject.tag == Consts.PlayerTag && Health.GetCurrentHealth > 0)
         {
             PlayerHealth.DamageOverTime(Damage);
         }
@@ -37,7 +38,7 @@ public class MobTouchDamage : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == Consts.PlayerTag)
+        if (other.gameObject.tag == Consts.PlayerTag && Health.GetCurrentHealth > 0)
         {
             MobMove.enabled = true;
         }

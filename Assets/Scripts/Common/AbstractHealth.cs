@@ -1,11 +1,24 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class AbstractHealth : MonoBehaviour
 {
     [SerializeField] protected float MaxHealth;
     [SerializeField] protected float CurrentHealth;
+    [SerializeField] protected UnityEvent OnZeroHealth;
+    [SerializeField] protected float DeathAnimDuration;
+    private WaitForSeconds DeathAnimWaitForSeconds;
+    public event Action<GameObject> OnDeathAnimComplete;
+    public float GetCurrentHealth => CurrentHealth;
 
-    private void OnEnable()
+    protected virtual void Awake()
+    {
+        DeathAnimWaitForSeconds = new WaitForSeconds(DeathAnimDuration);
+    }
+
+    protected virtual void OnEnable()
     {
         CurrentHealth = MaxHealth;
     }
@@ -30,9 +43,17 @@ public abstract class AbstractHealth : MonoBehaviour
         CurrentHealth -= damage;
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
-        if (CurrentHealth <= 0)
+        if (CurrentHealth == 0)
         {
-            Debug.LogError(gameObject + " zero health");
+            OnZeroHealth.Invoke();
+            _ = StartCoroutine(DeathAnim());
         }
+    }
+
+    private IEnumerator DeathAnim()
+    {
+        yield return DeathAnimWaitForSeconds;
+
+        OnDeathAnimComplete?.Invoke(gameObject);
     }
 }

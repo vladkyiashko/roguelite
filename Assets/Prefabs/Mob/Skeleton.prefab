@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: -2600921697406234232}
   - component: {fileID: 104554511087964461}
   - component: {fileID: 6913008773946833589}
+  - component: {fileID: 8681054039129696855}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Mob
@@ -134,6 +135,7 @@ MonoBehaviour:
   Speed: 1.5
   RB: {fileID: 7553607540146644748}
   Sprite: {fileID: 4747139907020917287}
+  Health: {fileID: 104554511087964461}
   Events:
     OnMoveStart:
       m_PersistentCalls:
@@ -222,6 +224,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  Health: {fileID: 104554511087964461}
 --- !u!114 &-2600921697406234232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,8 +254,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032938c12f2412c21b8ea70d1ece0eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 10
+  MaxHealth: 2
   CurrentHealth: 0
+  OnZeroHealth:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6913008773946833589}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: -414722770
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6890353468434102916}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  DeathAnimDuration: 0.67
   SpriteRenderer: {fileID: 4747139907020917287}
 --- !u!95 &6913008773946833589
 Animator:
@@ -274,6 +305,45 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8681054039129696855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234399648206545692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a104360f8ab073a9a3b10bb61e37c28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AwakeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6890353468434102916}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  StartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDisableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDestroyEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0

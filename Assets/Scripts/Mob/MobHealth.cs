@@ -10,15 +10,17 @@ public class MobHealth : AbstractHealth
     private const float WhiteSpriteColorTime = 0.3f;
     private WaitForSeconds WhiteSpriteColorWait;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         WhiteSpriteColorWait = new(WhiteSpriteColorTime);
         ShaderDefault = SpriteRenderer.material.shader;
         ShaderGUIText = Shader.Find("GUI/Text Shader");
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         SpriteRenderer.material.shader = ShaderDefault;
     }
 

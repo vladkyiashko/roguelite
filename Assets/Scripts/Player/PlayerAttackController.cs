@@ -57,7 +57,7 @@ public class PlayerAttackController : MonoBehaviour
         mobHolder.GetMobHealth.Damage(attack.GetDamage);
         mobHolder.GetRigidbody.AddForce(
                 (mobHolder.GetTransform.position - PlayerTransform.position) * attack.GetPushForce);
-        if (attack.StunWaitForSeconds != null)
+        if (attack.StunWaitForSeconds != null && mobHolder.GetMobHealth.GetCurrentHealth > 0)
         {
             mobHolder.GetMobMove.Stun(attack.StunWaitForSeconds);
         }
@@ -68,7 +68,7 @@ public class PlayerAttackController : MonoBehaviour
             CachedDamageTextByGameObject.Add(
                     damageTextInstance, damageTextInstance.GetComponent<DamageTextHolder>());
         }
-        CachedDamageTextByGameObject[damageTextInstance].GetTransform.SetParent(WorldSpaceCanvasTransform);
+        CachedDamageTextByGameObject[damageTextInstance].GetTransform.SetParent(WorldSpaceCanvasTransform, true);
         CachedDamageTextByGameObject[damageTextInstance].GetTransform.position = mobHolder.GetTransform.position;
         CachedDamageTextByGameObject[damageTextInstance].GetText.text = attack.GetDamage.ToString();
     }
