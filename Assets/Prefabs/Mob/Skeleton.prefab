@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: -2600921697406234232}
   - component: {fileID: 104554511087964461}
   - component: {fileID: 6913008773946833589}
+  - component: {fileID: -6963778919061801710}
   - component: {fileID: 8681054039129696855}
   m_Layer: 7
   m_Name: Skeleton
@@ -168,6 +169,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   Transform: {fileID: 3720808744207008119}
+  MobStateController: {fileID: -6963778919061801710}
 --- !u!61 &6890353468434102916
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -207,7 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
-  MobMove: {fileID: 948919739942694656}
   Events:
     OnAttack:
       m_PersistentCalls:
@@ -224,7 +225,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  Health: {fileID: 104554511087964461}
+  StateController: {fileID: -6963778919061801710}
 --- !u!114 &-2600921697406234232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +243,7 @@ MonoBehaviour:
   MobTouchDamage: {fileID: -2152890245813175898}
   MobHealth: {fileID: 104554511087964461}
   Rigidbody: {fileID: 7553607540146644748}
+  StateController: {fileID: -6963778919061801710}
 --- !u!114 &104554511087964461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032938c12f2412c21b8ea70d1ece0eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 2
+  MaxHealth: 4
   CurrentHealth: 0
   OnZeroHealth:
     m_PersistentCalls:
@@ -305,6 +307,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6963778919061801710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234399648206545692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6adf6bd1c0f3bbfeab97cde1be692040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 104554511087964461}
 --- !u!114 &8681054039129696855
 MonoBehaviour:
   m_ObjectHideFlags: 0

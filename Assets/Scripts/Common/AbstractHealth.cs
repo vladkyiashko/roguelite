@@ -10,6 +10,7 @@ public abstract class AbstractHealth : MonoBehaviour
     [SerializeField] protected UnityEvent OnZeroHealth;
     [SerializeField] protected float DeathAnimDuration;
     private WaitForSeconds DeathAnimWaitForSeconds;
+    public event Action OnZeroHealthAction;
     public event Action<GameObject> OnDeathAnimComplete;
     public float GetCurrentHealth => CurrentHealth;
 
@@ -45,12 +46,13 @@ public abstract class AbstractHealth : MonoBehaviour
 
         if (CurrentHealth == 0)
         {
+            OnZeroHealthAction?.Invoke();
             OnZeroHealth.Invoke();
             _ = StartCoroutine(DeathAnim());
         }
     }
 
-    private IEnumerator DeathAnim()
+    protected virtual IEnumerator DeathAnim()
     {
         yield return DeathAnimWaitForSeconds;
 

@@ -11,7 +11,7 @@ public abstract class AbstractMove : MonoBehaviour
     [SerializeField] protected MoveEvents Events;
     protected Vector3 MoveDir;
     public FaceDir CurrentFaceDir { get; private set; }
-    public bool IsMoving { get; set; }
+    private bool IsMoving;
 
     protected virtual void FixedUpdate()
     {

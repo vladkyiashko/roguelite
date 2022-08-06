@@ -57,9 +57,10 @@ public class PlayerAttackController : MonoBehaviour
         mobHolder.GetMobHealth.Damage(attack.GetDamage);
         mobHolder.GetRigidbody.AddForce(
                 (mobHolder.GetTransform.position - PlayerTransform.position) * attack.GetPushForce);
-        if (attack.StunWaitForSeconds != null && mobHolder.GetMobHealth.GetCurrentHealth > 0)
+
+        if (attack.StunWaitForSeconds != null)
         {
-            mobHolder.GetMobMove.Stun(attack.StunWaitForSeconds);
+            mobHolder.GetMobStateController.Stun(attack.StunWaitForSeconds);
         }
 
         GameObject damageTextInstance = LocalObjectPool.Instantiate(DamageTextPrefab);
