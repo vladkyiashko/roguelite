@@ -19,6 +19,6 @@ public class AutoPoolDestroy : MonoBehaviour
     private IEnumerator DestroyDelayed()
     {
         yield return DelayWaitForSeconds;
-        LocalObjectPool.Destroy(gameObject);
+        LocalObjectPool.Destroy(transform);
     }
 }

@@ -11,14 +11,14 @@ public class EnvSpawnController : MonoBehaviour
     [SerializeField] private GameObjectWeightInfo[] Zones;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private Vector2 ZoneCenterOffset;
-    private Dictionary<Vector2Int, EnvSpawnZone> ZoneInstanceByPositionIndex = new Dictionary<Vector2Int, EnvSpawnZone>();
-    private Vector2Int ActiveZonesCountDimensions = new Vector2Int(5, 5);
+    private Dictionary<Vector2Int, EnvSpawnZone> ZoneInstanceByPositionIndex = new();
+    private Vector2Int ActiveZonesCountDimensions = new(5, 5);
     private Vector2Int[] PositionIndexes;
     private Dictionary<Vector2Int, Vector2> PositionOffsetsByPositionIndexes;
     private Vector2Int MiddlePositionIndex;
     public event Action<EnvSpawnZone> OnEnvSpawnZoneInstantiated;    
     private List<Vector2Int> NotVisiblePositionIndexes;
-    private Dictionary<GameObject, EnvSpawnZone> CachedEnvSpawnZoneByGameObject = new Dictionary<GameObject, EnvSpawnZone>();
+    private LocalObjectPoolGeneric<EnvSpawnZone> Pool;
 
     private void Awake()
     {        
@@ -28,7 +28,8 @@ public class EnvSpawnController : MonoBehaviour
         InitSelector();
         MiddlePositionIndex = ActiveZonesCountDimensions / 2;
         InitNotVisiblePositionIndexes();
-    }    
+        Pool = new LocalObjectPoolGeneric<EnvSpawnZone>();
+    }
 
     private void InitPositionIndexes()
     {
@@ -106,17 +107,16 @@ public class EnvSpawnController : MonoBehaviour
     {
         GameObjectWeightInfo zone = Selector.SelectRandomItem();
 
-        GameObject zoneInstance = LocalObjectPool.Instantiate(zone.Prefab);
-        if (!CachedEnvSpawnZoneByGameObject.ContainsKey(zoneInstance))
+        EnvSpawnZone zoneInstance = Pool.Instantiate(zone.Prefab);
+        if (!zoneInstance.Inited)
         {
-            CachedEnvSpawnZoneByGameObject.Add(zoneInstance, zoneInstance.GetComponent<EnvSpawnZone>());
-            CachedEnvSpawnZoneByGameObject[zoneInstance].OnTriggerPlayerEnter += OnPlayerEnter;
+            zoneInstance.Inited = true;
+            zoneInstance.OnTriggerPlayerEnter += OnPlayerEnter;
         }
-        CachedEnvSpawnZoneByGameObject[zoneInstance].GetTransform.position = position;
+        zoneInstance.GetTransform.position = position;
+        OnEnvSpawnZoneInstantiated?.Invoke(zoneInstance);
 
-        OnEnvSpawnZoneInstantiated?.Invoke(CachedEnvSpawnZoneByGameObject[zoneInstance]);
-
-        return CachedEnvSpawnZoneByGameObject[zoneInstance];
+        return zoneInstance;
     }
 
     private void OnPlayerEnter(EnvSpawnZone envSpawnZone)
@@ -130,8 +130,8 @@ public class EnvSpawnController : MonoBehaviour
 
         Vector2Int positionIndexDiff = positionIndex - MiddlePositionIndex;
 
-        Dictionary<Vector2Int, EnvSpawnZone> newZoneInstanceByPositionIndex = new Dictionary<Vector2Int, EnvSpawnZone>();
-        List<EnvSpawnZone> destroyZoneQueue = new List<EnvSpawnZone>();
+        Dictionary<Vector2Int, EnvSpawnZone> newZoneInstanceByPositionIndex = new();
+        List<EnvSpawnZone> destroyZoneQueue = new();
 
         foreach (KeyValuePair<Vector2Int, EnvSpawnZone> zoneKeyValuePair in ZoneInstanceByPositionIndex)
         {
@@ -160,7 +160,7 @@ public class EnvSpawnController : MonoBehaviour
 
         for (int i = 0; i < destroyZoneQueue.Count; i++)
         {
-            LocalObjectPool.Destroy(destroyZoneQueue[i].gameObject);
+            Pool.Destroy(destroyZoneQueue[i].GetTransform);
         }
     }
 
@@ -169,7 +169,7 @@ public class EnvSpawnController : MonoBehaviour
         Vector2Int positionIndex = NotVisiblePositionIndexes[UnityEngine.Random.Range(0, NotVisiblePositionIndexes.Count)];
         Transform zoneTransform = ZoneInstanceByPositionIndex[positionIndex].GetTransform;
         
-        Vector3 offset = new Vector3(UnityEngine.Random.Range(1, ZoneSizeDimensions.x), -UnityEngine.Random.Range(1, ZoneSizeDimensions.y), 0);
+        Vector3 offset = new(UnityEngine.Random.Range(1, ZoneSizeDimensions.x), -UnityEngine.Random.Range(1, ZoneSizeDimensions.y), 0);
 
         return zoneTransform.position + offset;
     }

@@ -1,6 +1,5 @@
 using UnityEngine;
 using DataStructures.RandomSelector;
-using System.Collections.Generic;
 using System.Collections;
 
 public class MobSpawnController : MonoBehaviour
@@ -12,14 +11,15 @@ public class MobSpawnController : MonoBehaviour
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private PlayerHealth PlayerHealth;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
+    private LocalObjectPoolGeneric<MobHolder> Pool;
     private Coroutine SpawnLoopCoroutine;
     private Vector3 GetSpawnPosition => EnvSpawnController.GetRandomNotVisiblePosition();
-    private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new Dictionary<GameObject, MobHolder>();
 
     private void Awake()
     {
         EnvSpawnController.OnEnvSpawnZoneInstantiated += OnEnvSpawnZoneInstantiated;
         InitSelector();
+        Pool = new LocalObjectPoolGeneric<MobHolder>();
     }
 
     private void InitSelector()
@@ -52,7 +52,7 @@ public class MobSpawnController : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
-        WaitForSeconds delay = new WaitForSeconds(SpawnDelay);
+        WaitForSeconds delay = new(SpawnDelay);
 
         while (true)
         {
@@ -65,20 +65,20 @@ public class MobSpawnController : MonoBehaviour
     {
         GameObjectWeightInfo mob = Selector.SelectRandomItem();
 
-        GameObject mobInstance = LocalObjectPool.Instantiate(mob.Prefab);
-        if (!CachedMobHolderByGameObject.ContainsKey(mobInstance))
+        MobHolder mobInstance = Pool.Instantiate(mob.Prefab);
+        if (!mobInstance.Inited)
         {
-            CachedMobHolderByGameObject.Add(mobInstance, mobInstance.GetComponent<MobHolder>());
-            CachedMobHolderByGameObject[mobInstance].GetMobTouchDamage.PlayerHealth = PlayerHealth;
-            CachedMobHolderByGameObject[mobInstance].GetMobMove.Target = PlayerTransform;
-            CachedMobHolderByGameObject[mobInstance].GetMobHealth.OnDeathAnimComplete += OnMobDeathAnimComplete;
+            mobInstance.Inited = true;
+            mobInstance.GetMobTouchDamage.PlayerHealth = PlayerHealth;
+            mobInstance.GetMobMove.Target = PlayerTransform;
+            mobInstance.GetMobHealth.OnDeathAnimComplete += OnMobDeathAnimComplete;
         }
-        CachedMobHolderByGameObject[mobInstance].GetTransform.position = GetSpawnPosition;
+        mobInstance.GetTransform.position = GetSpawnPosition;
     }
 
-    private void OnMobDeathAnimComplete(GameObject mobGO)
+    private void OnMobDeathAnimComplete(Transform mobTransform)
     {
-        LocalObjectPool.Destroy(mobGO);
+        Pool.Destroy(mobTransform);
     }
 
     private void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)
@@ -90,7 +90,7 @@ public class MobSpawnController : MonoBehaviour
     {
         if (!envSpawnZone.gameObject.activeInHierarchy)
         {
-            CachedMobHolderByGameObject[mob].GetTransform.position = GetSpawnPosition;
+            mob.transform.position = GetSpawnPosition;
         }
     }
 }

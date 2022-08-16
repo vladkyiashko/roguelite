@@ -11,7 +11,7 @@ public abstract class AbstractHealth : MonoBehaviour
     [SerializeField] protected float DeathAnimDuration;
     private WaitForSeconds DeathAnimWaitForSeconds;
     public event Action OnZeroHealthAction;
-    public event Action<GameObject> OnDeathAnimComplete;
+    public event Action<Transform> OnDeathAnimComplete;
     public float GetCurrentHealth => CurrentHealth;
 
     protected virtual void Awake()
@@ -56,6 +56,6 @@ public abstract class AbstractHealth : MonoBehaviour
     {
         yield return DeathAnimWaitForSeconds;
 
-        OnDeathAnimComplete?.Invoke(gameObject);
+        OnDeathAnimComplete?.Invoke(transform);
     }
 }

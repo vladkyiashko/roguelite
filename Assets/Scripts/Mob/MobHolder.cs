@@ -14,5 +14,6 @@ public class MobHolder : MonoBehaviour
     public MobHealth GetMobHealth => MobHealth;
     public Rigidbody2D GetRigidbody => Rigidbody;
     public MobStateController GetMobStateController => StateController;
+    public bool Inited { get; set; }
 }
 

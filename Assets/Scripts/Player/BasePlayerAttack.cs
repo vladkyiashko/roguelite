@@ -14,6 +14,7 @@ public class BasePlayerAttack : MonoBehaviour
     public float GetDelay => Delay;
     public float GetDamage => Damage;
     public float GetPushForce => PushForce;
+    public bool Inited { get; set; }
 
     private void Awake()
     {

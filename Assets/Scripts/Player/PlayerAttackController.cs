@@ -12,9 +12,17 @@ public class PlayerAttackController : MonoBehaviour
     private Vector3 LeftScale = new(-1, 1, 1);
     private List<BasePlayerAttack> ActiveAttacks = new();
     private Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
-    private Dictionary<GameObject, BasePlayerAttack> CachedAttackByGameObject = new();
+    private LocalObjectPoolGeneric<BasePlayerAttack> AttackPool;
     private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
-    private Dictionary<GameObject, DamageTextHolder> CachedDamageTextByGameObject = new();
+    private LocalObjectPoolGeneric<DamageTextHolder> DamageTextPool;
+    private readonly WaitForSeconds AttackDestroyDelay = new(0.5f);
+    private readonly WaitForSeconds DamageTextDestroyDelay = new(1f);
+
+    private void Awake()
+    {
+        AttackPool = new LocalObjectPoolGeneric<BasePlayerAttack>();
+        DamageTextPool = new LocalObjectPoolGeneric<DamageTextHolder>();
+    }
 
     private void Start()
     {
@@ -34,18 +42,20 @@ public class PlayerAttackController : MonoBehaviour
         {
             yield return delay;
 
-            GameObject attackInstance = LocalObjectPool.Instantiate(attack.gameObject);
-            if (!CachedAttackByGameObject.ContainsKey(attackInstance))
+            BasePlayerAttack attackInstance = AttackPool.Instantiate(attack.gameObject);
+            if (!attackInstance.Inited)
             {
-                CachedAttackByGameObject.Add(attackInstance, attackInstance.GetComponent<BasePlayerAttack>());
-                CachedAttackByGameObject[attackInstance].OnTriggerEnter += OnTriggerEnterAttack;
+                attackInstance.Inited = true;
+                attackInstance.OnTriggerEnter += OnTriggerEnterAttack;
             }
-            CachedAttackByGameObject[attackInstance].GetTransform.position = PlayerTransform.position;
+            attackInstance.GetTransform.position = PlayerTransform.position;
 
-            CachedAttackByGameObject[attackInstance].GetTransform.localScale =
+            attackInstance.GetTransform.localScale =
                 PlayerMove.CurrentFaceDir == AbstractMove.FaceDir.Right ? Vector3.one : LeftScale;
+
+            StartCoroutine(DestroyDelayed(AttackPool, AttackDestroyDelay, attackInstance.GetTransform));
         }
-    }
+    }    
 
     private void OnTriggerEnterAttack(BasePlayerAttack attack, Collider2D collider)
     {
@@ -63,14 +73,17 @@ public class PlayerAttackController : MonoBehaviour
             mobHolder.GetMobStateController.Stun(attack.StunWaitForSeconds);
         }
 
-        GameObject damageTextInstance = LocalObjectPool.Instantiate(DamageTextPrefab);
-        if (!CachedDamageTextByGameObject.ContainsKey(damageTextInstance))
-        {
-            CachedDamageTextByGameObject.Add(
-                    damageTextInstance, damageTextInstance.GetComponent<DamageTextHolder>());
-        }
-        CachedDamageTextByGameObject[damageTextInstance].GetTransform.SetParent(WorldSpaceCanvasTransform, true);
-        CachedDamageTextByGameObject[damageTextInstance].GetTransform.position = mobHolder.GetTransform.position;
-        CachedDamageTextByGameObject[damageTextInstance].GetText.text = attack.GetDamage.ToString();
+        DamageTextHolder damageTextInstance = DamageTextPool.Instantiate(DamageTextPrefab);
+        damageTextInstance.GetTransform.SetParent(WorldSpaceCanvasTransform, true);
+        damageTextInstance.GetTransform.position = mobHolder.GetTransform.position;
+        damageTextInstance.GetText.text = attack.GetDamage.ToString();
+
+        StartCoroutine(DestroyDelayed(DamageTextPool, DamageTextDestroyDelay, damageTextInstance.GetTransform));
+    }
+
+    private IEnumerator DestroyDelayed(ILocalObjectPoolGeneric pool, WaitForSeconds delay, Transform goTransform)
+    {
+        yield return delay;
+        pool.Destroy(goTransform);
     }
 }

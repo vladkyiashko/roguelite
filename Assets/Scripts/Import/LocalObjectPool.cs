@@ -41,24 +41,15 @@ public class LocalObjectPool : MonoBehaviour
         }
     }
 
-    public static void Destroy(GameObject objectInstance)
+    public static void Destroy(Transform objectInstanceTransform)
     {       
         if (Instance.Enabled)
         {
-            if (objectInstance.name.Contains("(Clone)"))
-            {
-#if UNITY_EDITOR
-                Debug.LogError("Non ObjectPool object detected! " + objectInstance.name);
-#endif
-                Object.Destroy(objectInstance);
-            }
-            else
-                if ( objectInstance.activeSelf)
-                    objectInstance.transform.parent = Instance.ObjectHolder.transform;
+                objectInstanceTransform.parent = Instance.ObjectHolder.transform;
         }
         else
         {
-            Object.Destroy(objectInstance);
+            Object.Destroy(objectInstanceTransform.gameObject);
         }
     }
 
@@ -115,7 +106,6 @@ public class LocalObjectPool : MonoBehaviour
     private GameObject CreateInstance(ICollection<GameObject> pool, GameObject prefab)
     {
         GameObject objectInstance = Object.Instantiate(prefab);
-        objectInstance.name = objectInstance.name.Replace("(Clone)", "_" + pool.Count);
         objectInstance.transform.parent = ObjectHolder.transform;
         pool.Add(objectInstance);
         return objectInstance;
