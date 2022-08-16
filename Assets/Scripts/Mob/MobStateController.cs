@@ -24,7 +24,6 @@ public class MobStateController : MonoBehaviour
             return;
         }
 
-
         if (CurrentStunCor != null)
         {
             StopCoroutine(CurrentStunCor);
@@ -41,6 +40,11 @@ public class MobStateController : MonoBehaviour
 
     public void OnAttackStop()
     {
+        if (State == MobState.stunned)
+        {
+            return;
+        }
+
         State = MobState.none;
     }
 
