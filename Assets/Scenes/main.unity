@@ -1678,6 +1678,7 @@ MonoBehaviour:
   EnvSpawnController: {fileID: 145213809}
   PlayerTransform: {fileID: 1427016427}
   PlayerHealth: {fileID: 1610369469}
+  DropPickup: {fileID: 8060707241996725269, guid: 75340c31915a5f2baaa9b69a5cd2c55a, type: 3}
 --- !u!4 &1587603386
 Transform:
   m_ObjectHideFlags: 0

@@ -5,5 +5,5 @@ using UnityEngine;
 public struct GameObjectWeightInfo
 {
     public GameObject Prefab;
-        public int Weight;
+    public int Weight;
 }

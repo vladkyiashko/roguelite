@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 6913008773946833589}
   - component: {fileID: -6963778919061801710}
   - component: {fileID: 8681054039129696855}
+  - component: {fileID: 8944014218324420148}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Mob
@@ -244,6 +245,7 @@ MonoBehaviour:
   MobHealth: {fileID: 104554511087964461}
   Rigidbody: {fileID: 7553607540146644748}
   StateController: {fileID: -6963778919061801710}
+  DropController: {fileID: 8944014218324420148}
 --- !u!114 &104554511087964461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032938c12f2412c21b8ea70d1ece0eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 4
+  MaxHealth: 1
   CurrentHealth: 0
   OnZeroHealth:
     m_PersistentCalls:
@@ -359,6 +361,36 @@ MonoBehaviour:
   OnDestroyEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnTriggerEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTriggerExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8944014218324420148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3234399648206545692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08aff72d6580ab268a13fc12eddc0093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: {fileID: 104554511087964461}
+  Drops:
+  - Prefab: {fileID: 0}
+    Weight: 0
+  - Prefab: {fileID: 3452894718384996863, guid: a0bec620d80244359878c9f6fe01b280, type: 3}
+    Weight: 1
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0

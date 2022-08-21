@@ -12,6 +12,11 @@ public class MobStateController : MonoBehaviour
         Health.OnZeroHealthAction += OnZeroHealth;
     }
 
+    private void OnDestroy()
+    {
+        Health.OnZeroHealthAction -= OnZeroHealth;
+    }
+
     private void OnEnable()
     {
         State = MobState.none;
