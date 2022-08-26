@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec4533e26b6a49a881edfbb597fee17, type: 3}
+  m_Name: ExpModel
+  m_EditorClassIdentifier: 
+  ExpChanged: {fileID: 11400000, guid: 62c296ba4b4b6cfb6a42d4c9ea789260, type: 2}
+  ExpPercentChanged: {fileID: 11400000, guid: 78a933a45a6f474ac8d18c4b833fb8bc, type: 2}
+  LevelChanged: {fileID: 11400000, guid: 5bb864f53301bf30db130b2aac7ed889, type: 2}

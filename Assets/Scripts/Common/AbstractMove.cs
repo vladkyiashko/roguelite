@@ -4,7 +4,7 @@ using System;
 
 public abstract class AbstractMove : MonoBehaviour
 {
-    [SerializeField] protected float Speed;
+    [SerializeField] protected BaseUnitBalance Balance;
     [SerializeField] protected Rigidbody2D RB;
     [SerializeField] protected SpriteRenderer Sprite;
     [SerializeField] protected AbstractHealth Health;
@@ -37,7 +37,7 @@ public abstract class AbstractMove : MonoBehaviour
             IsMoving = true;
         }
 
-        RB.MovePosition(transform.position + (MoveDir * Speed * Time.fixedDeltaTime));
+        RB.MovePosition(transform.position + (MoveDir * Balance.Speed * Time.fixedDeltaTime));
 
         SetSpriteDir();
     }

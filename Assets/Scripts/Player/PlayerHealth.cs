@@ -11,7 +11,7 @@ public class PlayerHealth : AbstractHealth
 
     private void OnHealthPercentChangedInvoke()
     {
-        OnHealthPercentChanged?.Invoke(CurrentHealth / MaxHealth);
+        OnHealthPercentChanged?.Invoke(CurrentHealth / Balance.MaxHealth);
     }
 
     public override void DamageOverTime(float damage)

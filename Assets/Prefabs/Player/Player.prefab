@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &167694012972720884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6999440862189382546}
+  - component: {fileID: 3841534345769107005}
+  m_Layer: 3
+  m_Name: OnExpGemPickupListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6999440862189382546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167694012972720884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1761782525319597570}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3841534345769107005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167694012972720884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce223ae7fd6d5e450b91c6428716f667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 5a69adda6dfcae412866cb4b3f25a3d1, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2313559999191045858}
+        m_TargetAssemblyTypeName: ExpController, Assembly-CSharp
+        m_MethodName: OnExpGemPickup
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1761782524139371669
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +244,7 @@ GameObject:
   - component: {fileID: 7294160612856147392}
   - component: {fileID: 237019325994539496}
   - component: {fileID: 8060707241996725269}
+  - component: {fileID: 2313559999191045858}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -205,6 +266,7 @@ Transform:
   m_Children:
   - {fileID: 1761782524139371625}
   - {fileID: 1761782524992367463}
+  - {fileID: 6999440862189382546}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -241,7 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 932360d0156398844920d7f3306f43c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 2
+  Balance: {fileID: 11400000, guid: 8fdf48ea2da86f6a7a0549234da27a6c, type: 2}
   RB: {fileID: 1761782525319597568}
   Sprite: {fileID: 1761782524992367462}
   Health: {fileID: 3734601071120700290}
@@ -289,12 +351,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 392b4bab473b9197d9485b57e1ce3bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 10
+  Balance: {fileID: 11400000, guid: 8fdf48ea2da86f6a7a0549234da27a6c, type: 2}
   CurrentHealth: 0
   OnZeroHealth:
     m_PersistentCalls:
       m_Calls: []
-  DeathAnimDuration: 0
 --- !u!61 &1761782525319597572
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -372,3 +433,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTransform: {fileID: 1761782525319597570}
+  OnExpGemPickup: {fileID: 11400000, guid: 5a69adda6dfcae412866cb4b3f25a3d1, type: 2}
+--- !u!114 &2313559999191045858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761782525319597569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcfdc0944577879aa62480860be3ed4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExpBalance: {fileID: 11400000, guid: 410c17f1a661b6a56a8f0be916b05af7, type: 2}
+  ExpModel: {fileID: 11400000, guid: 7444e9cc381595debae8a4bedafb32ba, type: 2}

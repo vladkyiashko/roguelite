@@ -5,10 +5,9 @@ using UnityEngine.Events;
 
 public abstract class AbstractHealth : MonoBehaviour
 {
-    [SerializeField] protected float MaxHealth;
+    [SerializeField] protected BaseUnitBalance Balance;
     [SerializeField] protected float CurrentHealth;
     [SerializeField] protected UnityEvent OnZeroHealth;
-    [SerializeField] protected float DeathAnimDuration;
     private WaitForSeconds DeathAnimWaitForSeconds;
     public event Action OnZeroHealthAction;
     public event Action<Transform> OnDeathAnimComplete;
@@ -16,12 +15,12 @@ public abstract class AbstractHealth : MonoBehaviour
 
     protected virtual void Awake()
     {
-        DeathAnimWaitForSeconds = new WaitForSeconds(DeathAnimDuration);
+        DeathAnimWaitForSeconds = new WaitForSeconds(Balance.DeathAnimDuration);
     }
 
     protected virtual void OnEnable()
     {
-        CurrentHealth = MaxHealth;
+        CurrentHealth = Balance.MaxHealth;
     }
 
     public virtual void Damage(float damage)
@@ -42,7 +41,7 @@ public abstract class AbstractHealth : MonoBehaviour
         }
 
         CurrentHealth -= damage;
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, Balance.MaxHealth);
 
         if (CurrentHealth == 0)
         {

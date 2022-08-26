@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0edbb0b6f5ee605be903dd42cf91c9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 1.5
+  Balance: {fileID: 11400000, guid: 86f2fdaba338049aab474628b0898199, type: 2}
   RB: {fileID: 7553607540146644748}
   Sprite: {fileID: 4747139907020917287}
   Health: {fileID: 104554511087964461}
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68d6a57628746be290e9ca58a0aa20a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 1
+  Balance: {fileID: 11400000, guid: 86f2fdaba338049aab474628b0898199, type: 2}
   Events:
     OnAttack:
       m_PersistentCalls:
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032938c12f2412c21b8ea70d1ece0eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 1
+  Balance: {fileID: 11400000, guid: 86f2fdaba338049aab474628b0898199, type: 2}
   CurrentHealth: 0
   OnZeroHealth:
     m_PersistentCalls:
@@ -287,7 +287,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  DeathAnimDuration: 0.67
   SpriteRenderer: {fileID: 4747139907020917287}
 --- !u!95 &6913008773946833589
 Animator:
@@ -385,12 +384,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08aff72d6580ab268a13fc12eddc0093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Balance: {fileID: 11400000, guid: 86f2fdaba338049aab474628b0898199, type: 2}
   Health: {fileID: 104554511087964461}
-  Drops:
-  - Prefab: {fileID: 0}
-    Weight: 0
-  - Prefab: {fileID: 3452894718384996863, guid: a0bec620d80244359878c9f6fe01b280, type: 3}
-    Weight: 1
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class MobTouchDamage : MonoBehaviour
 {
-    [SerializeField] private float Damage;
+    [SerializeField] private MobBalance Balance;
     [SerializeField] private DamageEvents Events;
     [SerializeField] private MobStateController StateController;
     public PlayerHealth PlayerHealth { get; set; }
@@ -22,7 +22,7 @@ public class MobTouchDamage : MonoBehaviour
     {
         if (other.gameObject.tag == Consts.PlayerTag && StateController.State != MobState.dying)
         {
-            PlayerHealth.DamageOverTime(Damage);
+            PlayerHealth.DamageOverTime(Balance.Damage);
         }
     }
 

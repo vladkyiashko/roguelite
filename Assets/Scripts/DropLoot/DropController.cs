@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class DropController : MonoBehaviour
 {
+    [SerializeField] private MobBalance Balance;
     [SerializeField] private AbstractHealth Health;
-    [SerializeField] private GameObjectWeightInfo[] Drops;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private LocalObjectPoolGeneric<Loot> Pool;
     public DropPickup DropPickup { get; set; }
@@ -30,17 +30,25 @@ public class DropController : MonoBehaviour
         }
 
         Loot lootInstance = Pool.Instantiate(dropInfo.Prefab);
+        lootInstance.Value = Balance.Exp;
         lootInstance.DropPickup = DropPickup;
         lootInstance.GetTransform.position = transform.position;
+        lootInstance.OnPickup += OnPickup;
     }
 
     private void InitSelector()
     {
         Selector = new DynamicRandomSelector<GameObjectWeightInfo>();
-        for (int i = 0; i < Drops.Length; i++)
+        for (int i = 0; i < Balance.Drops.Length; i++)
         {
-            Selector.Add(Drops[i], Drops[i].Weight);
+            Selector.Add(Balance.Drops[i], Balance.Drops[i].Weight);
         }
         _ = Selector.Build();
+    }
+
+    private void OnPickup(Loot lootInstance)
+    {
+        lootInstance.OnPickup -= OnPickup;
+        Pool.Destroy(lootInstance.GetTransform);
     }
 }
