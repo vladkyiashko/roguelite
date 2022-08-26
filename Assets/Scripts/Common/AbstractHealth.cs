@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,11 +5,10 @@ using UnityEngine.Events;
 public abstract class AbstractHealth : MonoBehaviour
 {
     [SerializeField] protected BaseUnitBalance Balance;
-    [SerializeField] protected float CurrentHealth;
     [SerializeField] protected UnityEvent OnZeroHealth;
+    [SerializeField] protected TransformGameEvent OnDeathAnimComplete;
     private WaitForSeconds DeathAnimWaitForSeconds;
-    public event Action OnZeroHealthAction;
-    public event Action<Transform> OnDeathAnimComplete;
+    protected float CurrentHealth;
     public float GetCurrentHealth => CurrentHealth;
 
     protected virtual void Awake()
@@ -45,7 +43,6 @@ public abstract class AbstractHealth : MonoBehaviour
 
         if (CurrentHealth == 0)
         {
-            OnZeroHealthAction?.Invoke();
             OnZeroHealth.Invoke();
             _ = StartCoroutine(DeathAnim());
         }
@@ -55,6 +52,6 @@ public abstract class AbstractHealth : MonoBehaviour
     {
         yield return DeathAnimWaitForSeconds;
 
-        OnDeathAnimComplete?.Invoke(transform);
+        OnDeathAnimComplete.Raise(transform);
     }
 }

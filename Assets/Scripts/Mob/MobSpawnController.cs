@@ -10,7 +10,6 @@ public class MobSpawnController : MonoBehaviour
     [SerializeField] private EnvSpawnController EnvSpawnController;
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private PlayerHealth PlayerHealth;
-    [SerializeField] private DropPickup DropPickup;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private LocalObjectPoolGeneric<MobHolder> Pool;
     private Vector3 GetSpawnPosition => EnvSpawnController.GetRandomNotVisiblePosition();
@@ -71,13 +70,11 @@ public class MobSpawnController : MonoBehaviour
             mobInstance.Inited = true;
             mobInstance.GetMobTouchDamage.PlayerHealth = PlayerHealth;
             mobInstance.GetMobMove.Target = PlayerTransform;
-            mobInstance.GetMobHealth.OnDeathAnimComplete += OnMobDeathAnimComplete;
-            mobInstance.GetDropController.DropPickup = DropPickup;
         }
         mobInstance.GetTransform.position = GetSpawnPosition;
     }
 
-    private void OnMobDeathAnimComplete(Transform mobTransform)
+    public void OnMobDeathAnimComplete(Transform mobTransform)
     {
         Pool.Destroy(mobTransform);
     }

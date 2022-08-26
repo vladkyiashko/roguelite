@@ -1,27 +1,21 @@
+using System.Collections.Generic;
 using DataStructures.RandomSelector;
 using UnityEngine;
 
 public class DropController : MonoBehaviour
 {
     [SerializeField] private MobBalance Balance;
-    [SerializeField] private AbstractHealth Health;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private LocalObjectPoolGeneric<Loot> Pool;
-    public DropPickup DropPickup { get; set; }
+    private List<Loot> ActiveLootInstances = new();
 
     private void Awake()
     {
         InitSelector();
-        Health.OnZeroHealthAction += OnZeroHealth;
         Pool = new LocalObjectPoolGeneric<Loot>();
     }
 
-    private void OnDestroy()
-    {
-        Health.OnZeroHealthAction -= OnZeroHealth;
-    }
-
-    private void OnZeroHealth()
+    public void OnZeroHealth()
     {
         GameObjectWeightInfo dropInfo = Selector.SelectRandomItem();
         if (dropInfo.Prefab == null)
@@ -30,10 +24,9 @@ public class DropController : MonoBehaviour
         }
 
         Loot lootInstance = Pool.Instantiate(dropInfo.Prefab);
+        ActiveLootInstances.Add(lootInstance);
         lootInstance.Value = Balance.Exp;
-        lootInstance.DropPickup = DropPickup;
         lootInstance.GetTransform.position = transform.position;
-        lootInstance.OnPickup += OnPickup;
     }
 
     private void InitSelector()
@@ -46,9 +39,16 @@ public class DropController : MonoBehaviour
         _ = Selector.Build();
     }
 
-    private void OnPickup(Loot lootInstance)
+    public void OnPickup(Loot lootInstance)
     {
-        lootInstance.OnPickup -= OnPickup;
+        Debug.Log(gameObject + " OnPickup " + lootInstance.gameObject + "; instances.Containes " + ActiveLootInstances.Contains(lootInstance));
+        if (!ActiveLootInstances.Contains(lootInstance))
+        {
+            return;
+        }
+
+        Debug.LogError("pool.destroy " + lootInstance.gameObject);
+        _ = ActiveLootInstances.Remove(lootInstance);
         Pool.Destroy(lootInstance.GetTransform);
     }
 }

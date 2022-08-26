@@ -267,6 +267,7 @@ Transform:
   - {fileID: 1761782524139371625}
   - {fileID: 1761782524992367463}
   - {fileID: 6999440862189382546}
+  - {fileID: 3605431334261192507}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -352,10 +353,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Balance: {fileID: 11400000, guid: 8fdf48ea2da86f6a7a0549234da27a6c, type: 2}
-  CurrentHealth: 0
   OnZeroHealth:
     m_PersistentCalls:
       m_Calls: []
+  OnDeathAnimComplete: {fileID: 11400000, guid: fb010f3c555f80d48a09ad95bd3ea3b5, type: 2}
 --- !u!61 &1761782525319597572
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -433,6 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTransform: {fileID: 1761782525319597570}
+  OnLootPickup: {fileID: 11400000, guid: 0c79807c527d76a579a66e2f95339a3e, type: 2}
   OnExpGemPickup: {fileID: 11400000, guid: 5a69adda6dfcae412866cb4b3f25a3d1, type: 2}
 --- !u!114 &2313559999191045858
 MonoBehaviour:
@@ -448,3 +450,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExpBalance: {fileID: 11400000, guid: 410c17f1a661b6a56a8f0be916b05af7, type: 2}
   ExpModel: {fileID: 11400000, guid: 7444e9cc381595debae8a4bedafb32ba, type: 2}
+--- !u!1 &2545685841770756160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3605431334261192507}
+  - component: {fileID: 3988716180995425320}
+  m_Layer: 3
+  m_Name: OnLootTriggerListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3605431334261192507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2545685841770756160}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1761782525319597570}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3988716180995425320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2545685841770756160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13aab2606a5e1cc4adb317f67fbbdb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 1c605d36b3e239684a67572c3d40ff98, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8060707241996725269}
+        m_TargetAssemblyTypeName: DropPickup, Assembly-CSharp
+        m_MethodName: OnTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

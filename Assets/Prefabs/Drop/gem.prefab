@@ -202,3 +202,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LootType: 1
   Transform: {fileID: 2416255086273673332}
+  OnLootTrigger: {fileID: 11400000, guid: 1c605d36b3e239684a67572c3d40ff98, type: 2}

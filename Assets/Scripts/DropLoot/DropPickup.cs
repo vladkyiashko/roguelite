@@ -4,6 +4,7 @@ using UnityEngine;
 public class DropPickup : MonoBehaviour
 {
     [SerializeField] private Transform TargetTransform;
+    [SerializeField] private LootGameEvent OnLootPickup;
     [SerializeField] private IntGameEvent OnExpGemPickup;
 
     public void OnTrigger(Loot loot)
@@ -47,7 +48,7 @@ public class DropPickup : MonoBehaviour
 
     private void OnFlyComplete(Loot loot)
     {
-        loot.Pickup();
+        OnLootPickup.Raise(loot);
         OnExpGemPickup.Raise(loot.Value);
     }
 }

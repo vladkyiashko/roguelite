@@ -7,16 +7,6 @@ public class MobStateController : MonoBehaviour
     private Coroutine CurrentStunCor;
     public MobState State { get; private set; }
 
-    private void Awake()
-    {
-        Health.OnZeroHealthAction += OnZeroHealth;
-    }
-
-    private void OnDestroy()
-    {
-        Health.OnZeroHealthAction -= OnZeroHealth;
-    }
-
     private void OnEnable()
     {
         State = MobState.none;
@@ -58,7 +48,7 @@ public class MobStateController : MonoBehaviour
         State = MobState.moving;
     }
 
-    private void OnZeroHealth()
+    public void OnZeroHealth()
     {
         State = MobState.dying;
     }
