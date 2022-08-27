@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class MobHealth : AbstractHealth
 {
+    [SerializeField] private MobHolder MobHolder;
     [SerializeField] private SpriteRenderer SpriteRenderer;
+    [SerializeField] private MobHolderGameEvent OnMobZeroHealth;
     private Shader ShaderGUIText;
     private Shader ShaderDefault;
     private Coroutine SpriteColorCor;
@@ -29,6 +31,11 @@ public class MobHealth : AbstractHealth
         base.CommonDamage(damage);
 
         SpriteColorCor = StartCoroutine(ChangeSpriteColor());
+
+        if (CurrentHealth == 0)
+        {
+            OnMobZeroHealth.Raise(MobHolder);
+        }
     }
 
     private IEnumerator ChangeSpriteColor()

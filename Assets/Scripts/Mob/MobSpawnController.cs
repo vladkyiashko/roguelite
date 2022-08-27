@@ -16,7 +16,6 @@ public class MobSpawnController : MonoBehaviour
 
     private void Awake()
     {
-        EnvSpawnController.OnEnvSpawnZoneInstantiated += OnEnvSpawnZoneInstantiated;
         InitSelector();
         Pool = new LocalObjectPoolGeneric<MobHolder>();
     }
@@ -29,14 +28,6 @@ public class MobSpawnController : MonoBehaviour
             Selector.Add(Mobs[i], Mobs[i].Weight);
         }
         _ = Selector.Build();
-    }
-
-    private void OnDestroy()
-    {
-        if (EnvSpawnController != null)
-        {
-            EnvSpawnController.OnEnvSpawnZoneInstantiated -= OnEnvSpawnZoneInstantiated;
-        }
     }
 
     private void Start()
@@ -79,7 +70,7 @@ public class MobSpawnController : MonoBehaviour
         Pool.Destroy(mobTransform);
     }
 
-    private void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)
+    public void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)
     {
         envSpawnZone.OnTriggerMobExit = OnMobExitZone;
     }

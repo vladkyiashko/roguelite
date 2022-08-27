@@ -9,6 +9,7 @@ public class EnvSpawnController : MonoBehaviour
     [SerializeField] private Vector2Int ZoneSizeDimensions;
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private GameObjectWeightInfo[] Zones;
+    [SerializeField] private EnvSpawnZoneGameEvent OnEnvSpawnZoneInstantiated;
     private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private Vector2 ZoneCenterOffset;
     private Dictionary<Vector2Int, EnvSpawnZone> ZoneInstanceByPositionIndex = new();
@@ -16,15 +17,14 @@ public class EnvSpawnController : MonoBehaviour
     private Vector2Int[] PositionIndexes;
     private Dictionary<Vector2Int, Vector2> PositionOffsetsByPositionIndexes;
     private Vector2Int MiddlePositionIndex;
-    public event Action<EnvSpawnZone> OnEnvSpawnZoneInstantiated;    
     private List<Vector2Int> NotVisiblePositionIndexes;
     private LocalObjectPoolGeneric<EnvSpawnZone> Pool;
 
     private void Awake()
-    {        
+    {
         InitPositionIndexes();
         ZoneCenterOffset = new Vector2(-ZoneSizeDimensions.x / 2f, ZoneSizeDimensions.y / 2f);
-        InitPositionOffsetsByPositionIndexes();        
+        InitPositionOffsetsByPositionIndexes();
         InitSelector();
         MiddlePositionIndex = ActiveZonesCountDimensions / 2;
         InitNotVisiblePositionIndexes();
@@ -49,33 +49,35 @@ public class EnvSpawnController : MonoBehaviour
     {
         PositionOffsetsByPositionIndexes = new Dictionary<Vector2Int, Vector2>();
         int positionIndexesIndex = 0;
-        int x = -ActiveZonesCountDimensions.x / 2 * ZoneSizeDimensions.x;		
-		for (int i = 0; i < ActiveZonesCountDimensions.x; i++)
-		{
-			int y = ActiveZonesCountDimensions.y / 2 * ZoneSizeDimensions.y;
-			for (int j = 0; j < ActiveZonesCountDimensions.y; j++)
-			{
-                PositionOffsetsByPositionIndexes.Add(PositionIndexes[positionIndexesIndex], new Vector2(x, y) + ZoneCenterOffset);
-				y -= ZoneSizeDimensions.y;
+        int x = -ActiveZonesCountDimensions.x / 2 * ZoneSizeDimensions.x;
+        for (int i = 0; i < ActiveZonesCountDimensions.x; i++)
+        {
+            int y = ActiveZonesCountDimensions.y / 2 * ZoneSizeDimensions.y;
+            for (int j = 0; j < ActiveZonesCountDimensions.y; j++)
+            {
+                PositionOffsetsByPositionIndexes.Add(
+                        PositionIndexes[positionIndexesIndex], new Vector2(x, y) + ZoneCenterOffset);
+                y -= ZoneSizeDimensions.y;
                 positionIndexesIndex++;
-			}	
-			x += ZoneSizeDimensions.x;
-		}
-    }    
+            }
+            x += ZoneSizeDimensions.x;
+        }
+    }
 
     private void InitNotVisiblePositionIndexes()
     {
         NotVisiblePositionIndexes = new List<Vector2Int>();
-        for(int i = 0; i < ActiveZonesCountDimensions.x; i++)
-		{
-			for(int j = 0; j < ActiveZonesCountDimensions.y; j++)
-			{
-				if ((Math.Abs(j - MiddlePositionIndex.y) >= MiddlePositionIndex.y) || (Math.Abs(i - MiddlePositionIndex.x) >= MiddlePositionIndex.x))
+        for (int i = 0; i < ActiveZonesCountDimensions.x; i++)
+        {
+            for (int j = 0; j < ActiveZonesCountDimensions.y; j++)
+            {
+                if ((Math.Abs(j - MiddlePositionIndex.y) >= MiddlePositionIndex.y)
+                        || (Math.Abs(i - MiddlePositionIndex.x) >= MiddlePositionIndex.x))
                 {
                     NotVisiblePositionIndexes.Add(new Vector2Int(i, j));
                 }
-			}
-		}
+            }
+        }
     }
 
     private void InitSelector()
@@ -85,7 +87,7 @@ public class EnvSpawnController : MonoBehaviour
         {
             Selector.Add(Zones[i], Zones[i].Weight);
         }
-        Selector.Build();
+        _ = Selector.Build();
     }
 
     private void Start()
@@ -93,7 +95,8 @@ public class EnvSpawnController : MonoBehaviour
         Vector2 playerTransformPosition = PlayerTransform.position;
         foreach (Vector2Int positionIndex in PositionIndexes)
         {
-            EnvSpawnZone zoneInstance = InstantiateZone(GetZonePosition(positionIndex, playerTransformPosition));
+            EnvSpawnZone zoneInstance = InstantiateZone(GetZonePosition(
+                        positionIndex, playerTransformPosition));
             ZoneInstanceByPositionIndex.Add(positionIndex, zoneInstance);
         }
     }
@@ -114,14 +117,15 @@ public class EnvSpawnController : MonoBehaviour
             zoneInstance.OnTriggerPlayerEnter += OnPlayerEnter;
         }
         zoneInstance.GetTransform.position = position;
-        OnEnvSpawnZoneInstantiated?.Invoke(zoneInstance);
+        OnEnvSpawnZoneInstantiated.Raise(zoneInstance);
 
         return zoneInstance;
     }
 
     private void OnPlayerEnter(EnvSpawnZone envSpawnZone)
     {
-        Vector2Int positionIndex = ZoneInstanceByPositionIndex.FirstOrDefault(x => x.Value.GetTransform.position == envSpawnZone.GetTransform.position).Key;
+        Vector2Int positionIndex = ZoneInstanceByPositionIndex.FirstOrDefault(
+                x => x.Value.GetTransform.position == envSpawnZone.GetTransform.position).Key;
 
         if (positionIndex == MiddlePositionIndex)
         {
@@ -135,7 +139,8 @@ public class EnvSpawnController : MonoBehaviour
 
         foreach (KeyValuePair<Vector2Int, EnvSpawnZone> zoneKeyValuePair in ZoneInstanceByPositionIndex)
         {
-            if (Mathf.Abs(positionIndex.x - zoneKeyValuePair.Key.x) > 2 || Mathf.Abs(positionIndex.y - zoneKeyValuePair.Key.y) > 2)
+            if (Mathf.Abs(positionIndex.x - zoneKeyValuePair.Key.x) > 2
+                    || Mathf.Abs(positionIndex.y - zoneKeyValuePair.Key.y) > 2)
             {
                 destroyZoneQueue.Add(zoneKeyValuePair.Value);
             }
@@ -146,15 +151,17 @@ public class EnvSpawnController : MonoBehaviour
             }
         }
 
-        Vector2 positionCenter = (Vector2) newZoneInstanceByPositionIndex[MiddlePositionIndex].GetTransform.position - ZoneCenterOffset;
+        Vector2 positionCenter =
+            (Vector2)newZoneInstanceByPositionIndex[MiddlePositionIndex].GetTransform.position
+            - ZoneCenterOffset;
         for (int i = 0; i < PositionIndexes.Length; i++)
         {
             if (!newZoneInstanceByPositionIndex.ContainsKey(PositionIndexes[i]))
             {
-                EnvSpawnZone zoneInstance = InstantiateZone(GetZonePosition(PositionIndexes[i], positionCenter));                
+                EnvSpawnZone zoneInstance = InstantiateZone(GetZonePosition(PositionIndexes[i], positionCenter));
                 newZoneInstanceByPositionIndex.Add(PositionIndexes[i], zoneInstance);
             }
-        }        
+        }
 
         ZoneInstanceByPositionIndex = new Dictionary<Vector2Int, EnvSpawnZone>(newZoneInstanceByPositionIndex);
 
@@ -165,11 +172,13 @@ public class EnvSpawnController : MonoBehaviour
     }
 
     public Vector3 GetRandomNotVisiblePosition()
-    {        
-        Vector2Int positionIndex = NotVisiblePositionIndexes[UnityEngine.Random.Range(0, NotVisiblePositionIndexes.Count)];
+    {
+        Vector2Int positionIndex = NotVisiblePositionIndexes[
+            UnityEngine.Random.Range(0, NotVisiblePositionIndexes.Count)];
         Transform zoneTransform = ZoneInstanceByPositionIndex[positionIndex].GetTransform;
-        
-        Vector3 offset = new(UnityEngine.Random.Range(1, ZoneSizeDimensions.x), -UnityEngine.Random.Range(1, ZoneSizeDimensions.y), 0);
+
+        Vector3 offset = new(UnityEngine.Random.Range(1, ZoneSizeDimensions.x),
+                -UnityEngine.Random.Range(1, ZoneSizeDimensions.y), 0);
 
         return zoneTransform.position + offset;
     }

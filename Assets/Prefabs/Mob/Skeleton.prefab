@@ -76,7 +76,6 @@ GameObject:
   - component: {fileID: 6913008773946833589}
   - component: {fileID: -6963778919061801710}
   - component: {fileID: 8681054039129696855}
-  - component: {fileID: 8944014218324420148}
   m_Layer: 7
   m_Name: Skeleton
   m_TagString: Mob
@@ -98,7 +97,6 @@ Transform:
   m_Children:
   - {fileID: 2218574314874064338}
   - {fileID: 1005226271672710012}
-  - {fileID: 5289824355675045976}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -240,13 +238,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29d88e4cbe8b6adf8f7a5e46ff52215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Balance: {fileID: 11400000, guid: 86f2fdaba338049aab474628b0898199, type: 2}
   MobMove: {fileID: 948919739942694656}
   Transform: {fileID: 3720808744207008119}
   MobTouchDamage: {fileID: -2152890245813175898}
   MobHealth: {fileID: 104554511087964461}
   Rigidbody: {fileID: 7553607540146644748}
   StateController: {fileID: -6963778919061801710}
-  DropController: {fileID: 8944014218324420148}
 --- !u!114 &104554511087964461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,18 +285,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8944014218324420148}
-        m_TargetAssemblyTypeName: DropController, Assembly-CSharp
-        m_MethodName: OnZeroHealth
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: -6963778919061801710}
         m_TargetAssemblyTypeName: MobStateController, Assembly-CSharp
         m_MethodName: OnZeroHealth
@@ -312,7 +298,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OnDeathAnimComplete: {fileID: 11400000, guid: e0cd33d5c1cead59893b142b8eecefe8, type: 2}
+  MobHolder: {fileID: -2600921697406234232}
   SpriteRenderer: {fileID: 4747139907020917287}
+  OnMobZeroHealth: {fileID: 11400000, guid: 0bf1a6176192ee079a964168a087cebd, type: 2}
 --- !u!95 &6913008773946833589
 Animator:
   serializedVersion: 4
@@ -397,19 +385,6 @@ MonoBehaviour:
   OnCollisionExitEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8944014218324420148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3234399648206545692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08aff72d6580ab268a13fc12eddc0093, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Balance: {fileID: 11400000, guid: 86f2fdaba338049aab474628b0898199, type: 2}
 --- !u!1 &8696484792355346826
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,63 +469,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &8800395320347643588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5289824355675045976}
-  - component: {fileID: 8984381283252710546}
-  m_Layer: 7
-  m_Name: OnLootPickupListener
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5289824355675045976
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800395320347643588}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3720808744207008119}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8984381283252710546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8800395320347643588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b13aab2606a5e1cc4adb317f67fbbdb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 0c79807c527d76a579a66e2f95339a3e, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8944014218324420148}
-        m_TargetAssemblyTypeName: DropController, Assembly-CSharp
-        m_MethodName: OnPickup
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
