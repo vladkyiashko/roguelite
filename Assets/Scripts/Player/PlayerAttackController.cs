@@ -36,49 +36,47 @@ public class PlayerAttackController : MonoBehaviour
 
     private IEnumerator AttackLoop(BasePlayerAttack attack)
     {
-        WaitForSeconds delay = new(attack.GetDelay);
+        WaitForSeconds delay = new(attack.GetBalance.Delay);
 
         while (true)
         {
             yield return delay;
 
             BasePlayerAttack attackInstance = AttackPool.Instantiate(attack.gameObject);
-            if (!attackInstance.Inited)
-            {
-                attackInstance.Inited = true;
-                attackInstance.OnTriggerEnter += OnTriggerEnterAttack;
-            }
+
             attackInstance.GetTransform.position = PlayerTransform.position;
 
             attackInstance.GetTransform.localScale =
                 PlayerMove.CurrentFaceDir == AbstractMove.FaceDir.Right ? Vector3.one : LeftScale;
 
-            StartCoroutine(DestroyDelayed(AttackPool, AttackDestroyDelay, attackInstance.GetTransform));
+            _ = StartCoroutine(DestroyDelayed(AttackPool, AttackDestroyDelay, attackInstance.GetTransform));
         }
-    }    
+    }
 
-    private void OnTriggerEnterAttack(BasePlayerAttack attack, Collider2D collider)
+    public void OnTriggerEnterAttack(PlayerAttackTrigger playerAttackTrigger)
     {
-        if (!CachedMobHolderByGameObject.ContainsKey(collider.gameObject))
+        if (!CachedMobHolderByGameObject.ContainsKey(playerAttackTrigger.OtherGameObject))
         {
-            CachedMobHolderByGameObject.Add(collider.gameObject, collider.GetComponent<MobHolder>());
+            CachedMobHolderByGameObject.Add(playerAttackTrigger.OtherGameObject,
+                    playerAttackTrigger.OtherGameObject.GetComponent<MobHolder>());
         }
-        MobHolder mobHolder = CachedMobHolderByGameObject[collider.gameObject];
-        mobHolder.GetMobHealth.Damage(attack.GetDamage);
+        MobHolder mobHolder = CachedMobHolderByGameObject[playerAttackTrigger.OtherGameObject];
+        mobHolder.GetMobHealth.Damage(playerAttackTrigger.PlayerAttack.GetBalance.Damage);
         mobHolder.GetRigidbody.AddForce(
-                (mobHolder.GetTransform.position - PlayerTransform.position) * attack.GetPushForce);
+                (mobHolder.GetTransform.position - PlayerTransform.position) *
+                playerAttackTrigger.PlayerAttack.GetBalance.PushForce);
 
-        if (attack.StunWaitForSeconds != null)
+        if (playerAttackTrigger.PlayerAttack.GetBalance.StunWaitForSeconds != null)
         {
-            mobHolder.GetMobStateController.Stun(attack.StunWaitForSeconds);
+            mobHolder.GetMobStateController.Stun(playerAttackTrigger.PlayerAttack.GetBalance.StunWaitForSeconds);
         }
 
         DamageTextHolder damageTextInstance = DamageTextPool.Instantiate(DamageTextPrefab);
         damageTextInstance.GetTransform.SetParent(WorldSpaceCanvasTransform, true);
         damageTextInstance.GetTransform.position = mobHolder.GetTransform.position;
-        damageTextInstance.GetText.text = attack.GetDamage.ToString();
+        damageTextInstance.GetText.text = playerAttackTrigger.PlayerAttack.GetBalance.Damage.ToString();
 
-        StartCoroutine(DestroyDelayed(DamageTextPool, DamageTextDestroyDelay, damageTextInstance.GetTransform));
+        _ = StartCoroutine(DestroyDelayed(DamageTextPool, DamageTextDestroyDelay, damageTextInstance.GetTransform));
     }
 
     private IEnumerator DestroyDelayed(ILocalObjectPoolGeneric pool, WaitForSeconds delay, Transform goTransform)

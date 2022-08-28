@@ -1,23 +1,3 @@
-using UnityEngine;
-using UnityEngine.Events;
-
-public class IntGameEventListener : MonoBehaviour
+public class IntGameEventListener : GenericGameEventListener<int, IntGameEvent>
 {
-    [SerializeField] private IntGameEvent Event;
-    [SerializeField] private UnityEvent<int> Response;
-
-    private void OnEnable()
-    {
-        Event.RegisterListener(this);
-    }
-
-    private void OnDisable()
-    {
-        Event.UnregisterListener(this);
-    }
-
-    public void OnEventRaised(int value)
-    {
-        Response.Invoke(value);
-    }
 }

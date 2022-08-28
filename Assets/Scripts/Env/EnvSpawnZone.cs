@@ -1,35 +1,27 @@
 using UnityEngine;
-using System;
 
 public class EnvSpawnZone : MonoBehaviour
-{    
+{
     [SerializeField] private BoxCollider2D Collider;
     [SerializeField] private Transform Transform;
+    [SerializeField] private EnvSpawnZoneGameEvent OnTriggerPlayerEnter;
+    [SerializeField] private EnvSpawnZoneTriggerGameEvent OnTriggerMobExit;
     public Transform GetTransform => Transform;
-    public Vector2Int GetSize => new Vector2Int((int)Collider.size.x, (int)Collider.size.y);
-    public bool Inited { get; set; }
-    public event Action<EnvSpawnZone> OnTriggerPlayerEnter;
-    public Action<EnvSpawnZone, GameObject> OnTriggerMobExit;
+    public Vector2Int GetSize => new((int)Collider.size.x, (int)Collider.size.y);
 
     private void OnTriggerEnter2D(Collider2D other)
-    {        
+    {
         if (other.tag == Consts.PlayerTag)
         {
-            if (OnTriggerPlayerEnter != null)
-            {
-                OnTriggerPlayerEnter.Invoke(this);
-            }            
-        }            
+            OnTriggerPlayerEnter.Raise(this);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
-    {        
+    {
         if (other.tag == Consts.MobTag)
         {
-            if (OnTriggerMobExit != null)
-            {
-                OnTriggerMobExit.Invoke(this, other.gameObject);
-            }                        
-        }            
+            OnTriggerMobExit.Raise(new EnvSpawnZoneTrigger(this, gameObject, other.gameObject));
+        }
     }
 }

@@ -1,19 +1,15 @@
 using System;
-using DataStructures.RandomSelector;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
 public class EnvSpawnController : MonoBehaviour
 {
-    [SerializeField] private Vector2Int ZoneSizeDimensions;
     [SerializeField] private Transform PlayerTransform;
-    [SerializeField] private GameObjectWeightInfo[] Zones;
+    [SerializeField] private EnvSpawnBalance Balance;
     [SerializeField] private EnvSpawnZoneGameEvent OnEnvSpawnZoneInstantiated;
-    private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private Vector2 ZoneCenterOffset;
     private Dictionary<Vector2Int, EnvSpawnZone> ZoneInstanceByPositionIndex = new();
-    private Vector2Int ActiveZonesCountDimensions = new(5, 5);
     private Vector2Int[] PositionIndexes;
     private Dictionary<Vector2Int, Vector2> PositionOffsetsByPositionIndexes;
     private Vector2Int MiddlePositionIndex;
@@ -23,21 +19,20 @@ public class EnvSpawnController : MonoBehaviour
     private void Awake()
     {
         InitPositionIndexes();
-        ZoneCenterOffset = new Vector2(-ZoneSizeDimensions.x / 2f, ZoneSizeDimensions.y / 2f);
+        ZoneCenterOffset = new Vector2(-Balance.ZoneSizeDimensions.x / 2f, Balance.ZoneSizeDimensions.y / 2f);
         InitPositionOffsetsByPositionIndexes();
-        InitSelector();
-        MiddlePositionIndex = ActiveZonesCountDimensions / 2;
+        MiddlePositionIndex = Balance.ActiveZonesCountDimensions / 2;
         InitNotVisiblePositionIndexes();
         Pool = new LocalObjectPoolGeneric<EnvSpawnZone>();
     }
 
     private void InitPositionIndexes()
     {
-        PositionIndexes = new Vector2Int[ActiveZonesCountDimensions.x * ActiveZonesCountDimensions.y];
+        PositionIndexes = new Vector2Int[Balance.ActiveZonesCountDimensions.x * Balance.ActiveZonesCountDimensions.y];
         int index = 0;
-        for (int i = 0; i < ActiveZonesCountDimensions.x; i++)
+        for (int i = 0; i < Balance.ActiveZonesCountDimensions.x; i++)
         {
-            for (int j = 0; j < ActiveZonesCountDimensions.y; j++)
+            for (int j = 0; j < Balance.ActiveZonesCountDimensions.y; j++)
             {
                 PositionIndexes[index] = new Vector2Int(i, j);
                 index++;
@@ -49,27 +44,27 @@ public class EnvSpawnController : MonoBehaviour
     {
         PositionOffsetsByPositionIndexes = new Dictionary<Vector2Int, Vector2>();
         int positionIndexesIndex = 0;
-        int x = -ActiveZonesCountDimensions.x / 2 * ZoneSizeDimensions.x;
-        for (int i = 0; i < ActiveZonesCountDimensions.x; i++)
+        int x = -Balance.ActiveZonesCountDimensions.x / 2 * Balance.ZoneSizeDimensions.x;
+        for (int i = 0; i < Balance.ActiveZonesCountDimensions.x; i++)
         {
-            int y = ActiveZonesCountDimensions.y / 2 * ZoneSizeDimensions.y;
-            for (int j = 0; j < ActiveZonesCountDimensions.y; j++)
+            int y = Balance.ActiveZonesCountDimensions.y / 2 * Balance.ZoneSizeDimensions.y;
+            for (int j = 0; j < Balance.ActiveZonesCountDimensions.y; j++)
             {
                 PositionOffsetsByPositionIndexes.Add(
                         PositionIndexes[positionIndexesIndex], new Vector2(x, y) + ZoneCenterOffset);
-                y -= ZoneSizeDimensions.y;
+                y -= Balance.ZoneSizeDimensions.y;
                 positionIndexesIndex++;
             }
-            x += ZoneSizeDimensions.x;
+            x += Balance.ZoneSizeDimensions.x;
         }
     }
 
     private void InitNotVisiblePositionIndexes()
     {
         NotVisiblePositionIndexes = new List<Vector2Int>();
-        for (int i = 0; i < ActiveZonesCountDimensions.x; i++)
+        for (int i = 0; i < Balance.ActiveZonesCountDimensions.x; i++)
         {
-            for (int j = 0; j < ActiveZonesCountDimensions.y; j++)
+            for (int j = 0; j < Balance.ActiveZonesCountDimensions.y; j++)
             {
                 if ((Math.Abs(j - MiddlePositionIndex.y) >= MiddlePositionIndex.y)
                         || (Math.Abs(i - MiddlePositionIndex.x) >= MiddlePositionIndex.x))
@@ -78,16 +73,6 @@ public class EnvSpawnController : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void InitSelector()
-    {
-        Selector = new DynamicRandomSelector<GameObjectWeightInfo>();
-        for (int i = 0; i < Zones.Length; i++)
-        {
-            Selector.Add(Zones[i], Zones[i].Weight);
-        }
-        _ = Selector.Build();
     }
 
     private void Start()
@@ -108,21 +93,16 @@ public class EnvSpawnController : MonoBehaviour
 
     private EnvSpawnZone InstantiateZone(Vector2 position)
     {
-        GameObjectWeightInfo zone = Selector.SelectRandomItem();
+        GameObjectWeightInfo zone = Balance.GetSelector.SelectRandomItem();
 
         EnvSpawnZone zoneInstance = Pool.Instantiate(zone.Prefab);
-        if (!zoneInstance.Inited)
-        {
-            zoneInstance.Inited = true;
-            zoneInstance.OnTriggerPlayerEnter += OnPlayerEnter;
-        }
         zoneInstance.GetTransform.position = position;
         OnEnvSpawnZoneInstantiated.Raise(zoneInstance);
 
         return zoneInstance;
     }
 
-    private void OnPlayerEnter(EnvSpawnZone envSpawnZone)
+    public void OnPlayerEnter(EnvSpawnZone envSpawnZone)
     {
         Vector2Int positionIndex = ZoneInstanceByPositionIndex.FirstOrDefault(
                 x => x.Value.GetTransform.position == envSpawnZone.GetTransform.position).Key;
@@ -177,8 +157,8 @@ public class EnvSpawnController : MonoBehaviour
             UnityEngine.Random.Range(0, NotVisiblePositionIndexes.Count)];
         Transform zoneTransform = ZoneInstanceByPositionIndex[positionIndex].GetTransform;
 
-        Vector3 offset = new(UnityEngine.Random.Range(1, ZoneSizeDimensions.x),
-                -UnityEngine.Random.Range(1, ZoneSizeDimensions.y), 0);
+        Vector3 offset = new(UnityEngine.Random.Range(1, Balance.ZoneSizeDimensions.x),
+                -UnityEngine.Random.Range(1, Balance.ZoneSizeDimensions.y), 0);
 
         return zoneTransform.position + offset;
     }

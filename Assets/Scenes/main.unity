@@ -344,6 +344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 145213810}
   - component: {fileID: 145213809}
+  - component: {fileID: 145213811}
   m_Layer: 0
   m_Name: EnvSpawnController
   m_TagString: Untagged
@@ -363,13 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968b550ad66ca5b0a8b95c4d92742110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ZoneSizeDimensions: {x: 10, y: 5}
   PlayerTransform: {fileID: 1427016427}
-  Zones:
-  - Prefab: {fileID: 4503860094781467935, guid: 726f39e6d8e46eff1a9e4ecef8e19cd2, type: 3}
-    Weight: 1
-  - Prefab: {fileID: 4503860094781467935, guid: 10c5a0a8900df1fd2afc67df658e467e, type: 3}
-    Weight: 1
+  Balance: {fileID: 11400000, guid: 43770c5a0e348746596013bd189872b1, type: 2}
   OnEnvSpawnZoneInstantiated: {fileID: 11400000, guid: 5ac8e07aa5dfe43e28b54667d2cfe0f2, type: 2}
 --- !u!4 &145213810
 Transform:
@@ -386,6 +382,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &145213811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145213808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519362cd2a4d92ac29a16af80a2d33cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: b46e5cba34018af09bf65cd44114d6af, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 145213809}
+        m_TargetAssemblyTypeName: EnvSpawnController, Assembly-CSharp
+        m_MethodName: OnPlayerEnter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &241452135
 GameObject:
   m_ObjectHideFlags: 0
@@ -2101,7 +2125,7 @@ GameObject:
   - component: {fileID: 1587603386}
   - component: {fileID: 1587603385}
   - component: {fileID: 1587603387}
-  - component: {fileID: 1587603388}
+  - component: {fileID: 1587603389}
   m_Layer: 0
   m_Name: MobSpawnController
   m_TagString: Untagged
@@ -2121,11 +2145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd75e5ececd9c49a84fa5d8204ffc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialSpawnCount: 1
-  SpawnDelay: 9999
-  Mobs:
-  - Prefab: {fileID: 3234399648206545692, guid: 5da61e7b30286d9aa93b6e46414e096d, type: 3}
-    Weight: 1
+  Balance: {fileID: 11400000, guid: 94232c8f814a8784ba5cb365791a759a, type: 2}
   EnvSpawnController: {fileID: 145213809}
   PlayerTransform: {fileID: 1427016427}
   PlayerHealth: {fileID: 1610369469}
@@ -2172,7 +2192,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1587603388
+--- !u!114 &1587603389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2181,16 +2201,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1587603384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 519362cd2a4d92ac29a16af80a2d33cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 26a5e51c3acba6be48055d97cbe2d17c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 5ac8e07aa5dfe43e28b54667d2cfe0f2, type: 2}
+  Event: {fileID: 11400000, guid: 75264741118bad6e5a2388d5e9dfabdd, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1587603385}
         m_TargetAssemblyTypeName: MobSpawnController, Assembly-CSharp
-        m_MethodName: OnEnvSpawnZoneInstantiated
+        m_MethodName: OnMobExitZone
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

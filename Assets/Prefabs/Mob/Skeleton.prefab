@@ -225,6 +225,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  OnDOTToPlayer: {fileID: 11400000, guid: 73f89de9ac4c9388dbde489fa3256bca, type: 2}
   StateController: {fileID: -6963778919061801710}
 --- !u!114 &-2600921697406234232
 MonoBehaviour:

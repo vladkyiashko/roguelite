@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2579c166d3e96eac98599c9ad2d7eb3, type: 3}
+  m_Name: EnvSpawnBalance
+  m_EditorClassIdentifier: 
+  ZoneSizeDimensions: {x: 10, y: 5}
+  Zones:
+  - Prefab: {fileID: 4503860094781467935, guid: 726f39e6d8e46eff1a9e4ecef8e19cd2, type: 3}
+    Weight: 1
+  - Prefab: {fileID: 4503860094781467935, guid: 10c5a0a8900df1fd2afc67df658e467e, type: 3}
+    Weight: 1
+  ActiveZonesCountDimensions: {x: 5, y: 5}

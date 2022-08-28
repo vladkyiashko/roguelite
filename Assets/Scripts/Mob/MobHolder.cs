@@ -16,6 +16,5 @@ public class MobHolder : MonoBehaviour
     public Rigidbody2D GetRigidbody => Rigidbody;
     public MobStateController GetMobStateController => StateController;
     public MobBalance GetBalance => Balance;
-    public bool Inited { get; set; }
 }
 

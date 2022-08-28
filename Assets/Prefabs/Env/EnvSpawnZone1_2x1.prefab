@@ -78,6 +78,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 305800611468985752}
   Transform: {fileID: 4503860094781467928}
+  OnTriggerPlayerEnter: {fileID: 11400000, guid: b46e5cba34018af09bf65cd44114d6af, type: 2}
+  OnTriggerMobExit: {fileID: 11400000, guid: 75264741118bad6e5a2388d5e9dfabdd, type: 2}
 --- !u!61 &305800611468985752
 BoxCollider2D:
   m_ObjectHideFlags: 0

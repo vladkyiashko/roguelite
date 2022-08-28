@@ -6,8 +6,8 @@ public class MobTouchDamage : MonoBehaviour
 {
     [SerializeField] private MobBalance Balance;
     [SerializeField] private DamageEvents Events;
+    [SerializeField] private FloatGameEvent OnDOTToPlayer;
     [SerializeField] private MobStateController StateController;
-    public PlayerHealth PlayerHealth { get; set; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -22,7 +22,7 @@ public class MobTouchDamage : MonoBehaviour
     {
         if (other.gameObject.tag == Consts.PlayerTag && StateController.State != MobState.dying)
         {
-            PlayerHealth.DamageOverTime(Balance.Damage);
+            OnDOTToPlayer.Raise(Balance.Damage);
         }
     }
 

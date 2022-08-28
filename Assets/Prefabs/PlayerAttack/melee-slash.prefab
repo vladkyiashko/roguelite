@@ -157,11 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d552febd0e21d8e999b9028775e874a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
+  Balance: {fileID: 11400000, guid: 0efd86a7c175885f3bcb9f24f120b405, type: 2}
   Transform: {fileID: 2735558367376758288}
-  Delay: 2
-  Damage: 1
-  PushForce: 2000
-  StunDuration: 0.3
 --- !u!95 &2463496751741168504
 Animator:
   serializedVersion: 4

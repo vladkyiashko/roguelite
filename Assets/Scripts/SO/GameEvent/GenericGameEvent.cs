@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenericGameEvent<T/*, TListener*/> : ScriptableObject, IGameEvent<T>
+public class GenericGameEvent<T> : ScriptableObject, IGameEvent<T>
 {
     private readonly List<IGameEventListener<T>> Listeners = new();
 

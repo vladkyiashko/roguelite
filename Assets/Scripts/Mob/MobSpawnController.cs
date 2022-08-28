@@ -1,38 +1,23 @@
 using UnityEngine;
-using DataStructures.RandomSelector;
 using System.Collections;
 
 public class MobSpawnController : MonoBehaviour
 {
-    [SerializeField] private int InitialSpawnCount;
-    [SerializeField] private float SpawnDelay;
-    [SerializeField] private GameObjectWeightInfo[] Mobs;
+    [SerializeField] private MobSpawnBalance Balance;
     [SerializeField] private EnvSpawnController EnvSpawnController;
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private PlayerHealth PlayerHealth;
-    private DynamicRandomSelector<GameObjectWeightInfo> Selector;
     private LocalObjectPoolGeneric<MobHolder> Pool;
     private Vector3 GetSpawnPosition => EnvSpawnController.GetRandomNotVisiblePosition();
 
     private void Awake()
     {
-        InitSelector();
         Pool = new LocalObjectPoolGeneric<MobHolder>();
-    }
-
-    private void InitSelector()
-    {
-        Selector = new DynamicRandomSelector<GameObjectWeightInfo>();
-        for (int i = 0; i < Mobs.Length; i++)
-        {
-            Selector.Add(Mobs[i], Mobs[i].Weight);
-        }
-        _ = Selector.Build();
     }
 
     private void Start()
     {
-        for (int i = 0; i < InitialSpawnCount; i++)
+        for (int i = 0; i < Balance.InitialSpawnCount; i++)
         {
             Spawn();
         }
@@ -42,7 +27,7 @@ public class MobSpawnController : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
-        WaitForSeconds delay = new(SpawnDelay);
+        WaitForSeconds delay = new(Balance.SpawnDelay);
 
         while (true)
         {
@@ -53,15 +38,11 @@ public class MobSpawnController : MonoBehaviour
 
     private void Spawn()
     {
-        GameObjectWeightInfo mob = Selector.SelectRandomItem();
+        GameObjectWeightInfo mob = Balance.GetSelector.SelectRandomItem();
 
         MobHolder mobInstance = Pool.Instantiate(mob.Prefab);
-        if (!mobInstance.Inited)
-        {
-            mobInstance.Inited = true;
-            mobInstance.GetMobTouchDamage.PlayerHealth = PlayerHealth;
-            mobInstance.GetMobMove.Target = PlayerTransform;
-        }
+
+        mobInstance.GetMobMove.Target = PlayerTransform;
         mobInstance.GetTransform.position = GetSpawnPosition;
     }
 
@@ -70,16 +51,11 @@ public class MobSpawnController : MonoBehaviour
         Pool.Destroy(mobTransform);
     }
 
-    public void OnEnvSpawnZoneInstantiated(EnvSpawnZone envSpawnZone)
+    public void OnMobExitZone(EnvSpawnZoneTrigger envSpawnZoneTrigger)
     {
-        envSpawnZone.OnTriggerMobExit = OnMobExitZone;
-    }
-
-    private void OnMobExitZone(EnvSpawnZone envSpawnZone, GameObject mob)
-    {
-        if (!envSpawnZone.gameObject.activeInHierarchy)
+        if (!envSpawnZoneTrigger.EnvSpawnZoneGO.activeInHierarchy)
         {
-            mob.transform.position = GetSpawnPosition;
+            envSpawnZoneTrigger.OtherGameObject.transform.position = GetSpawnPosition;
         }
     }
 }
