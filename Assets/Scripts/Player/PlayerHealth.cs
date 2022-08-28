@@ -1,8 +1,8 @@
-using System;
+using UnityEngine;
 
 public class PlayerHealth : AbstractHealth
 {
-    public event Action<float> OnHealthPercentChanged;
+    [SerializeField] private FloatGameEvent OnHealthPercentChanged;
 
     private void Start()
     {
@@ -11,12 +11,12 @@ public class PlayerHealth : AbstractHealth
 
     private void OnHealthPercentChangedInvoke()
     {
-        OnHealthPercentChanged?.Invoke(CurrentHealth / Balance.MaxHealth);
+        OnHealthPercentChanged.Raise(CurrentHealth / Balance.MaxHealth);
     }
 
-    public override void DamageOverTime(float damage)
+    protected override void CommonDamage(float damage)
     {
-        base.DamageOverTime(damage);
+        base.CommonDamage(damage);
         OnHealthPercentChangedInvoke();
     }
 }

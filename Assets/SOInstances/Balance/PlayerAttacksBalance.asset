@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8a0c1e257ed6418b623ac3b3e1a8f0, type: 3}
+  m_Name: PlayerAttacksBalance
+  m_EditorClassIdentifier: 
+  Attacks:
+  - Prefab: {fileID: 2874652830637333935, guid: d48e527e93b6b8b0da9cba19c126f828, type: 3}
+    Balance:
+      Delay: 2
+      Damage: 1
+      PushForce: 2000
+      StunDuration: 0.3
+  AttackDestroyDelay: 0.5
+  DamageTextDestroyDelay: 1

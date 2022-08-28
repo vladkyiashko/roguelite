@@ -359,6 +359,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnDeathAnimComplete: {fileID: 11400000, guid: fb010f3c555f80d48a09ad95bd3ea3b5, type: 2}
+  OnHealthPercentChanged: {fileID: 11400000, guid: c10097b980fe470489b17e61e58d6688, type: 2}
 --- !u!61 &1761782525319597572
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -397,8 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b39e601575ec7128daf29d0b5efd98bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackPrefabs:
-  - {fileID: 2874652830637333935, guid: d48e527e93b6b8b0da9cba19c126f828, type: 3}
+  Balance: {fileID: 11400000, guid: 8bc194f9e09446be78bb8fdf81e0fa96, type: 2}
   PlayerTransform: {fileID: 1761782525319597570}
   PlayerMove: {fileID: 1761782525319597573}
   DamageTextPrefab: {fileID: 4276332424027451848, guid: a3fab07b43a408f408f6b062525a6bfa, type: 3}

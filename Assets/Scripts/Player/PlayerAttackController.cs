@@ -4,19 +4,17 @@ using System.Collections;
 
 public class PlayerAttackController : MonoBehaviour
 {
-    [SerializeField] private BasePlayerAttack[] AttackPrefabs;
+    [SerializeField] private PlayerAttacksBalance Balance;
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private AbstractMove PlayerMove;
     [SerializeField] private GameObject DamageTextPrefab;
     [SerializeField] private Transform WorldSpaceCanvasTransform;
     private Vector3 LeftScale = new(-1, 1, 1);
-    private List<BasePlayerAttack> ActiveAttacks = new();
+    private List<BasePlayerAttack> ActiveAttackPrefabs = new();
     private Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
     private LocalObjectPoolGeneric<BasePlayerAttack> AttackPool;
     private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
     private LocalObjectPoolGeneric<DamageTextHolder> DamageTextPool;
-    private readonly WaitForSeconds AttackDestroyDelay = new(0.5f);
-    private readonly WaitForSeconds DamageTextDestroyDelay = new(1f);
 
     private void Awake()
     {
@@ -26,30 +24,31 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Start()
     {
-        ActiveAttacks.Add(AttackPrefabs[0]);
+        ActiveAttackPrefabs.Add(Balance.Attacks[0].Prefab);
 
-        for (int i = 0; i < ActiveAttacks.Count; i++)
+        for (int i = 0; i < ActiveAttackPrefabs.Count; i++)
         {
-            AttackLoopsByAttack.Add(ActiveAttacks[i], StartCoroutine(AttackLoop(ActiveAttacks[i])));
+            AttackLoopsByAttack.Add(ActiveAttackPrefabs[i], StartCoroutine(AttackLoop(ActiveAttackPrefabs[i])));
         }
     }
 
-    private IEnumerator AttackLoop(BasePlayerAttack attack)
+    private IEnumerator AttackLoop(BasePlayerAttack attackPrefab)
     {
-        WaitForSeconds delay = new(attack.GetBalance.Delay);
-
         while (true)
         {
-            yield return delay;
+            yield return Balance.DelayWaitForSecondsByAttackPrefab[attackPrefab];
 
-            BasePlayerAttack attackInstance = AttackPool.Instantiate(attack.gameObject);
+            BasePlayerAttack attackInstance = AttackPool.Instantiate(attackPrefab.gameObject);
+            attackInstance.Balance = Balance.AttackBalanceByAttackPrefab[attackPrefab];
+            attackInstance.StunWaitForSeconds = Balance.StunWaitForSecondsByAttackPrefab[attackPrefab];
 
             attackInstance.GetTransform.position = PlayerTransform.position;
 
             attackInstance.GetTransform.localScale =
                 PlayerMove.CurrentFaceDir == AbstractMove.FaceDir.Right ? Vector3.one : LeftScale;
 
-            _ = StartCoroutine(DestroyDelayed(AttackPool, AttackDestroyDelay, attackInstance.GetTransform));
+            _ = StartCoroutine(DestroyDelayed(AttackPool, Balance.AttackDestroyDelayWaitForSeconds,
+                        attackInstance.GetTransform));
         }
     }
 
@@ -61,22 +60,20 @@ public class PlayerAttackController : MonoBehaviour
                     playerAttackTrigger.OtherGameObject.GetComponent<MobHolder>());
         }
         MobHolder mobHolder = CachedMobHolderByGameObject[playerAttackTrigger.OtherGameObject];
-        mobHolder.GetMobHealth.Damage(playerAttackTrigger.PlayerAttack.GetBalance.Damage);
+        mobHolder.GetMobHealth.Damage(playerAttackTrigger.PlayerAttack.Balance.Damage);
         mobHolder.GetRigidbody.AddForce(
                 (mobHolder.GetTransform.position - PlayerTransform.position) *
-                playerAttackTrigger.PlayerAttack.GetBalance.PushForce);
+                playerAttackTrigger.PlayerAttack.Balance.PushForce);
 
-        if (playerAttackTrigger.PlayerAttack.GetBalance.StunWaitForSeconds != null)
-        {
-            mobHolder.GetMobStateController.Stun(playerAttackTrigger.PlayerAttack.GetBalance.StunWaitForSeconds);
-        }
+        mobHolder.GetMobStateController.Stun(playerAttackTrigger.PlayerAttack.StunWaitForSeconds);
 
         DamageTextHolder damageTextInstance = DamageTextPool.Instantiate(DamageTextPrefab);
         damageTextInstance.GetTransform.SetParent(WorldSpaceCanvasTransform, true);
         damageTextInstance.GetTransform.position = mobHolder.GetTransform.position;
-        damageTextInstance.GetText.text = playerAttackTrigger.PlayerAttack.GetBalance.Damage.ToString();
+        damageTextInstance.GetText.text = playerAttackTrigger.PlayerAttack.Balance.Damage.ToString();
 
-        _ = StartCoroutine(DestroyDelayed(DamageTextPool, DamageTextDestroyDelay, damageTextInstance.GetTransform));
+        _ = StartCoroutine(DestroyDelayed(DamageTextPool, Balance.DamageTextDestroyDelayWaitForSeconds,
+                    damageTextInstance.GetTransform));
     }
 
     private IEnumerator DestroyDelayed(ILocalObjectPoolGeneric pool, WaitForSeconds delay, Transform goTransform)
