@@ -270,6 +270,7 @@ Transform:
   - {fileID: 3605431334261192507}
   - {fileID: 4992797045614584564}
   - {fileID: 1836126215119267811}
+  - {fileID: 1935935472235947080}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -450,6 +451,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adcfdc0944577879aa62480860be3ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LevelUpBalance: {fileID: 11400000, guid: a3cfb716bd3a4a597a81605ba3d61ede, type: 2}
+  PlayerAttacksBalance: {fileID: 11400000, guid: 8bc194f9e09446be78bb8fdf81e0fa96, type: 2}
   ExpBalance: {fileID: 11400000, guid: 410c17f1a661b6a56a8f0be916b05af7, type: 2}
   ExpModel: {fileID: 11400000, guid: 7444e9cc381595debae8a4bedafb32ba, type: 2}
 --- !u!1 &2545685841770756160
@@ -623,6 +626,66 @@ MonoBehaviour:
       - m_Target: {fileID: 3734601071120700290}
         m_TargetAssemblyTypeName: PlayerHealth, Assembly-CSharp
         m_MethodName: DamageOverTime
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &5822455099022324307
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1935935472235947080}
+  - component: {fileID: 3378349578856399151}
+  m_Layer: 3
+  m_Name: OnLevelChangedListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1935935472235947080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5822455099022324307}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1761782525319597570}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3378349578856399151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5822455099022324307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce223ae7fd6d5e450b91c6428716f667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 5bb864f53301bf30db130b2aac7ed889, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2313559999191045858}
+        m_TargetAssemblyTypeName: ExpController, Assembly-CSharp
+        m_MethodName: OnLevelUp
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -10,7 +10,7 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private GameObject DamageTextPrefab;
     [SerializeField] private Transform WorldSpaceCanvasTransform;
     private Vector3 LeftScale = new(-1, 1, 1);
-    private List<BasePlayerAttack> ActiveAttackPrefabs = new();
+    private List<int> ActiveAttackIds = new();
     private Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
     private LocalObjectPoolGeneric<BasePlayerAttack> AttackPool;
     private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
@@ -24,11 +24,12 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Start()
     {
-        ActiveAttackPrefabs.Add(Balance.Attacks[0].Prefab);
+        ActiveAttackIds.Add(0);
 
-        for (int i = 0; i < ActiveAttackPrefabs.Count; i++)
+        for (int i = 0; i < ActiveAttackIds.Count; i++)
         {
-            AttackLoopsByAttack.Add(ActiveAttackPrefabs[i], StartCoroutine(AttackLoop(ActiveAttackPrefabs[i])));
+            BasePlayerAttack prefab = Balance.Attacks[ActiveAttackIds[i]].Prefab;
+            AttackLoopsByAttack.Add(prefab, StartCoroutine(AttackLoop(prefab)));
         }
     }
 
@@ -54,12 +55,7 @@ public class PlayerAttackController : MonoBehaviour
 
     public void OnTriggerEnterAttack(PlayerAttackTrigger playerAttackTrigger)
     {
-        if (!CachedMobHolderByGameObject.ContainsKey(playerAttackTrigger.OtherGameObject))
-        {
-            CachedMobHolderByGameObject.Add(playerAttackTrigger.OtherGameObject,
-                    playerAttackTrigger.OtherGameObject.GetComponent<MobHolder>());
-        }
-        MobHolder mobHolder = CachedMobHolderByGameObject[playerAttackTrigger.OtherGameObject];
+        MobHolder mobHolder = GetAttackedMobHolder(playerAttackTrigger);
         mobHolder.GetMobHealth.Damage(playerAttackTrigger.PlayerAttack.Balance.Damage);
         mobHolder.GetRigidbody.AddForce(
                 (mobHolder.GetTransform.position - PlayerTransform.position) *
@@ -74,6 +70,17 @@ public class PlayerAttackController : MonoBehaviour
 
         _ = StartCoroutine(DestroyDelayed(DamageTextPool, Balance.DamageTextDestroyDelayWaitForSeconds,
                     damageTextInstance.GetTransform));
+    }
+
+    private MobHolder GetAttackedMobHolder(PlayerAttackTrigger playerAttackTrigger)
+    {
+        if (!CachedMobHolderByGameObject.ContainsKey(playerAttackTrigger.OtherGameObject))
+        {
+            CachedMobHolderByGameObject.Add(playerAttackTrigger.OtherGameObject,
+                    playerAttackTrigger.OtherGameObject.GetComponent<MobHolder>());
+        }
+        MobHolder mobHolder = CachedMobHolderByGameObject[playerAttackTrigger.OtherGameObject];
+        return mobHolder;
     }
 
     private IEnumerator DestroyDelayed(ILocalObjectPoolGeneric pool, WaitForSeconds delay, Transform goTransform)

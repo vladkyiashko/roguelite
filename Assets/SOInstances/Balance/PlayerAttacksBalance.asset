@@ -19,5 +19,11 @@ MonoBehaviour:
       Damage: 1
       PushForce: 2000
       StunDuration: 0.3
+  - Prefab: {fileID: 2874652830637333935, guid: eb3376620ede6ddb6a4e403f13cc2595, type: 3}
+    Balance:
+      Delay: 3
+      Damage: 1
+      PushForce: 2000
+      StunDuration: 0.4
   AttackDestroyDelay: 0.5
   DamageTextDestroyDelay: 1

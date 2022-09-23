@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DataStructures.RandomSelector;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Balance/PlayerAttacksBalance")]
@@ -8,6 +9,20 @@ public class PlayerAttacksBalance : ScriptableObject
     public PlayerAttacksBalanceItem[] Attacks;
     public float AttackDestroyDelay = 0.5f;
     public float DamageTextDestroyDelay = 1f;
+    private DynamicRandomSelector<int> Selector;
+    public DynamicRandomSelector<int> GetSelector
+    {
+        get
+        {
+            if (Selector == null)
+            {
+                InitSelector();
+            }
+
+            return Selector;
+        }
+    }
+
     private Dictionary<BasePlayerAttack, WaitForSeconds> _StunWaitForSecondsByAttackPrefab;
     public Dictionary<BasePlayerAttack, WaitForSeconds> StunWaitForSecondsByAttackPrefab
     {
@@ -66,6 +81,16 @@ public class PlayerAttacksBalance : ScriptableObject
 
             return _AttackBalanceByAttackPrefab;
         }
+    }
+
+    private void InitSelector()
+    {
+        Selector = new DynamicRandomSelector<int>();
+        for (int i = 0; i < Attacks.Length; i++)
+        {
+            Selector.Add(i, Attacks[i].Balance.Weight);
+        }
+        _ = Selector.Build();
     }
 
     private void InitStunWaitForSecondsByAttackPrefab()

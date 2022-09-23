@@ -7,4 +7,5 @@ public struct BasePlayerAttackBalance
     public float Damage;
     public float PushForce;
     public float StunDuration;
+    public int Weight;
 }
