@@ -9,5 +9,7 @@
 *.csproj
 *.unityproj
 *.sln
+.vs/
+.vsconfig
 Assets/StreamingAssets
 Assets/StreamingAssets.meta

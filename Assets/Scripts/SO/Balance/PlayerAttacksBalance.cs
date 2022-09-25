@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Balance/PlayerAttacksBalance")]
 public class PlayerAttacksBalance : ScriptableObject
 {
-    public PlayerAttacksBalanceItem[] Attacks;
+    public PlayerItemsBalanceItem[] Attacks;
     public float AttackDestroyDelay = 0.5f;
     public float DamageTextDestroyDelay = 1f;
     private DynamicRandomSelector<int> Selector;
@@ -83,12 +83,30 @@ public class PlayerAttacksBalance : ScriptableObject
         }
     }
 
+    public void SelectorRemoveId(int[] ids)
+    {
+        for (int i = 0; i < ids.Length; i++)
+        {
+            Selector.Remove(ids[i]);
+        }
+        _ = Selector.Build();
+    }
+
+    public void SelectorAddIds(int[] ids)
+    {
+        for (int i = 0; i < ids.Length; i++)
+        {
+            Selector.Add(ids[i], Attacks[ids[i]].Weight);
+        }
+        _ = Selector.Build();
+    }
+
     private void InitSelector()
     {
         Selector = new DynamicRandomSelector<int>();
         for (int i = 0; i < Attacks.Length; i++)
         {
-            Selector.Add(i, Attacks[i].Balance.Weight);
+            Selector.Add(i, Attacks[i].Weight);
         }
         _ = Selector.Build();
     }
@@ -123,9 +141,15 @@ public class PlayerAttacksBalance : ScriptableObject
     }
 
     [Serializable]
-    public struct PlayerAttacksBalanceItem
+    public struct PlayerItemsBalanceItem
     {
         public BasePlayerAttack Prefab;
+        public int Weight;
+        public string Name;
+        public string Descr;
+        public string UpgDescrFormat;
+        public float ValueLevelPow;
+        public Sprite Sprite;
         public BasePlayerAttackBalance Balance;
     }
 }

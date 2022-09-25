@@ -60,6 +60,66 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &740897010881524346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8317611484636189576}
+  - component: {fileID: 3322708429958420623}
+  m_Layer: 3
+  m_Name: OnGetAttackItemIdListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8317611484636189576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740897010881524346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1761782525319597570}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3322708429958420623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740897010881524346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce223ae7fd6d5e450b91c6428716f667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 6edc9c9abe0e94c45b58a4b270dd081b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7294160612856147392}
+        m_TargetAssemblyTypeName: PlayerAttackController, Assembly-CSharp
+        m_MethodName: AddItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1761782524139371669
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +331,7 @@ Transform:
   - {fileID: 4992797045614584564}
   - {fileID: 1836126215119267811}
   - {fileID: 1935935472235947080}
+  - {fileID: 8317611484636189576}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -455,6 +516,34 @@ MonoBehaviour:
   PlayerAttacksBalance: {fileID: 11400000, guid: 8bc194f9e09446be78bb8fdf81e0fa96, type: 2}
   ExpBalance: {fileID: 11400000, guid: 410c17f1a661b6a56a8f0be916b05af7, type: 2}
   ExpModel: {fileID: 11400000, guid: 7444e9cc381595debae8a4bedafb32ba, type: 2}
+  PlayerAttackController: {fileID: 7294160612856147392}
+  OnLevelUpItemNames:
+  - {fileID: 11400000, guid: 780351d272bb72f4f99769481af28c74, type: 2}
+  - {fileID: 11400000, guid: f6eb6d6e34e8d4d4784ef97fc517ad35, type: 2}
+  - {fileID: 11400000, guid: 1161dfc02984bd146aa6fba330ea5bbd, type: 2}
+  - {fileID: 11400000, guid: c5768a9234790e940a3726be2b3a0c19, type: 2}
+  OnLevelUpItemIcons:
+  - {fileID: 11400000, guid: d0649c9d312b9194cbea319455f73e73, type: 2}
+  - {fileID: 11400000, guid: dd99e125c76b0a9468cb35fb3d80b043, type: 2}
+  - {fileID: 11400000, guid: 5f2e080353748fa488c2fd4417cc15a0, type: 2}
+  - {fileID: 11400000, guid: fbfea7c5a7ba9db49894aa87e80b4793, type: 2}
+  OnLevelUpItemDescrs:
+  - {fileID: 11400000, guid: 210d4cb87ecfa8b4c9764a406f272d8c, type: 2}
+  - {fileID: 11400000, guid: cf56073f69f7b8844b25fb44976cd678, type: 2}
+  - {fileID: 11400000, guid: 6f8d6445222a7ce4c88e1b96d25d4ebd, type: 2}
+  - {fileID: 11400000, guid: 678ddb7ed9e824e46bcec7f721e8ddbd, type: 2}
+  OnLevelUpItemIsNews:
+  - {fileID: 11400000, guid: f4dd07f0747f19346b6030a614edbd1f, type: 2}
+  - {fileID: 11400000, guid: 2913ea061f6dc0544a8343943f7f764e, type: 2}
+  - {fileID: 11400000, guid: 53071e36b56fdc9478fc25e0476d5d9e, type: 2}
+  - {fileID: 11400000, guid: a4fb45f8f5d28694ab5c59aa2ff9d9c1, type: 2}
+  OnLevelUpItemLevels:
+  - {fileID: 11400000, guid: 65e881c52e5f80342b44ccdc77fe6cac, type: 2}
+  - {fileID: 11400000, guid: 2edb6b7fc242ea24a93fbac88bec3a20, type: 2}
+  - {fileID: 11400000, guid: e431ea1c05bc48849bd8d157e62384ae, type: 2}
+  - {fileID: 11400000, guid: 71728baa20362b746839a38f19085e44, type: 2}
+  OnGetAttackItemId: {fileID: 11400000, guid: 6edc9c9abe0e94c45b58a4b270dd081b, type: 2}
+  OnGetDefenseItemId: {fileID: 11400000, guid: 50e95fe7b7b5ff349803e8709d34526a, type: 2}
 --- !u!1 &2545685841770756160
 GameObject:
   m_ObjectHideFlags: 0

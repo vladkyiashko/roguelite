@@ -10,11 +10,14 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private GameObject DamageTextPrefab;
     [SerializeField] private Transform WorldSpaceCanvasTransform;
     private Vector3 LeftScale = new(-1, 1, 1);
-    private List<int> ActiveAttackIds = new();
-    private Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
+    private readonly List<int> ActiveAttackIds = new();
+    private readonly Dictionary<int, int> ItemLevelsByIds = new();
+    private readonly Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
     private LocalObjectPoolGeneric<BasePlayerAttack> AttackPool;
-    private Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
+    private readonly Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
     private LocalObjectPoolGeneric<DamageTextHolder> DamageTextPool;
+    public List<int> GetActiveAttackIds => ActiveAttackIds;
+    public Dictionary<int, int> GetItemLevelsByIds => ItemLevelsByIds;
 
     private void Awake()
     {
@@ -24,13 +27,28 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Start()
     {
-        ActiveAttackIds.Add(0);
+        AddItem(0);   
+    }
 
-        for (int i = 0; i < ActiveAttackIds.Count; i++)
+    public void AddItem(int id)
+    {
+        if (ActiveAttackIds.Contains(id))
         {
-            BasePlayerAttack prefab = Balance.Attacks[ActiveAttackIds[i]].Prefab;
-            AttackLoopsByAttack.Add(prefab, StartCoroutine(AttackLoop(prefab)));
+            ItemLevelsByIds[id]++;
         }
+        else
+        {
+            ActiveAttackIds.Add(id);
+            ItemLevelsByIds.Add(id, 1);
+
+            BasePlayerAttack prefab = Balance.Attacks[id].Prefab;
+            AttackLoopsByAttack.Add(prefab, StartCoroutine(AttackLoop(prefab)));
+        }          
+    }
+
+    public float GetItemValueByLevel(int id, int level)
+    {
+        return Mathf.Pow(Balance.Attacks[id].Balance.Damage * level, Balance.Attacks[id].ValueLevelPow);
     }
 
     private IEnumerator AttackLoop(BasePlayerAttack attackPrefab)

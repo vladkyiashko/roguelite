@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class GenericGameEventListener<T, TEvent> : MonoBehaviour, IGameEventListener<T>
     where TEvent : IGameEvent<T>
-    //where TEvent : GenericGameEvent<T, GenericGameEventListener<T, TEvent>>
 {
     [SerializeField] private TEvent Event;
     [SerializeField] private UnityEvent<T> Response;
@@ -18,7 +17,7 @@ public class GenericGameEventListener<T, TEvent> : MonoBehaviour, IGameEventList
         Event.UnregisterListener(this);
     }
 
-    public void OnEventRaised(T value)
+    public virtual void OnEventRaised(T value)
     {
         Response.Invoke(value);
     }

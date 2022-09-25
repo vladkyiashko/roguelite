@@ -14,16 +14,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Attacks:
   - Prefab: {fileID: 2874652830637333935, guid: d48e527e93b6b8b0da9cba19c126f828, type: 3}
+    Weight: 1
+    Name: melee-slash
+    Descr: melee-slash descr
+    UpgDescrFormat: Base damage up by {0}
+    ValueLevelPow: 1.5
+    Sprite: {fileID: 5293088307283036655, guid: 267c7fb536f99514ea7c4e7236d4bdf8, type: 3}
     Balance:
       Delay: 2
       Damage: 1
       PushForce: 2000
       StunDuration: 0.3
   - Prefab: {fileID: 2874652830637333935, guid: eb3376620ede6ddb6a4e403f13cc2595, type: 3}
+    Weight: 1
+    Name: melee-slash-slow-long
+    Descr: melee-slash-slow-long descr
+    UpgDescrFormat: Base damage up by {0}
+    ValueLevelPow: 1.5
+    Sprite: {fileID: -8937499057154260928, guid: 267c7fb536f99514ea7c4e7236d4bdf8, type: 3}
     Balance:
       Delay: 3
       Damage: 1
       PushForce: 2000
       StunDuration: 0.4
+  - Prefab: {fileID: 2874652830637333935, guid: 6e6c346f35d21ed4686ebb9082eaed15, type: 3}
+    Weight: 1
+    Name: melee-slash-var1
+    Descr: melee-slash-var1 descr
+    UpgDescrFormat: Base damage up by {0}
+    ValueLevelPow: 1.5
+    Sprite: {fileID: -8937499057154260928, guid: 0bde33da364a06c4ab011aca33752f33, type: 3}
+    Balance:
+      Delay: 1
+      Damage: 0.5
+      PushForce: 1000
+      StunDuration: 0.2
+  - Prefab: {fileID: 2874652830637333935, guid: 424358516034589479b8af87b4d233ba, type: 3}
+    Weight: 1
+    Name: melee-slash-var2
+    Descr: melee-slash-var2 descr
+    UpgDescrFormat: Base damage up by {0}
+    ValueLevelPow: 1.5
+    Sprite: {fileID: 5293088307283036655, guid: 0bde33da364a06c4ab011aca33752f33, type: 3}
+    Balance:
+      Delay: 0.5
+      Damage: 0.25
+      PushForce: 1000
+      StunDuration: 0.2
   AttackDestroyDelay: 0.5
   DamageTextDestroyDelay: 1

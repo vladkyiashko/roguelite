@@ -6,6 +6,5 @@ public struct BasePlayerAttackBalance
     public float Delay;
     public float Damage;
     public float PushForce;
-    public float StunDuration;
-    public int Weight;
+    public float StunDuration;    
 }

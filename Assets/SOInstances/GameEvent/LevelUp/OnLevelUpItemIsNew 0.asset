@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bcbb15fa984aa4cb94b52b076e12fc4, type: 3}
-  m_Name: ExpBalance
+  m_Script: {fileID: 11500000, guid: dca0744a9ca3183458ccb61305dcffeb, type: 3}
+  m_Name: OnLevelUpItemIsNew 0
   m_EditorClassIdentifier: 
-  ExpPerLevelIndexes: 01000000090000001300000022000000360000004f0000006d00000090000000b8000000e5000000
