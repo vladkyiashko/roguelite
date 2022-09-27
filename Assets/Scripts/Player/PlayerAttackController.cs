@@ -12,7 +12,7 @@ public class PlayerAttackController : MonoBehaviour
     private Vector3 LeftScale = new(-1, 1, 1);
     private readonly List<int> ActiveAttackIds = new();
     private readonly Dictionary<int, int> ItemLevelsByIds = new();
-    private readonly Dictionary<BasePlayerAttack, Coroutine> AttackLoopsByAttack = new();
+    private readonly Dictionary<int, Coroutine> AttackLoopsById = new();
     private LocalObjectPoolGeneric<BasePlayerAttack> AttackPool;
     private readonly Dictionary<GameObject, MobHolder> CachedMobHolderByGameObject = new();
     private LocalObjectPoolGeneric<DamageTextHolder> DamageTextPool;
@@ -41,8 +41,7 @@ public class PlayerAttackController : MonoBehaviour
             ActiveAttackIds.Add(id);
             ItemLevelsByIds.Add(id, 1);
 
-            BasePlayerAttack prefab = Balance.Attacks[id].Prefab;
-            AttackLoopsByAttack.Add(prefab, StartCoroutine(AttackLoop(prefab)));
+            AttackLoopsById.Add(id, StartCoroutine(AttackLoop(id)));
         }          
     }
 
@@ -51,15 +50,21 @@ public class PlayerAttackController : MonoBehaviour
         return Mathf.Pow(Balance.Attacks[id].Balance.Damage * level, Balance.Attacks[id].ValueLevelPow);
     }
 
-    private IEnumerator AttackLoop(BasePlayerAttack attackPrefab)
+    public float GetItemValueByCurrentLevel(int id)
+    {
+        return GetItemValueByLevel(id, ItemLevelsByIds[id]);
+    }
+
+    private IEnumerator AttackLoop(int id)
     {
         while (true)
         {
-            yield return Balance.DelayWaitForSecondsByAttackPrefab[attackPrefab];
+            yield return Balance.DelayWaitForSecondsById[id];
 
-            BasePlayerAttack attackInstance = AttackPool.Instantiate(attackPrefab.gameObject);
-            attackInstance.Balance = Balance.AttackBalanceByAttackPrefab[attackPrefab];
-            attackInstance.StunWaitForSeconds = Balance.StunWaitForSecondsByAttackPrefab[attackPrefab];
+            BasePlayerAttack attackInstance = AttackPool.Instantiate(Balance.Attacks[id].Prefab.gameObject);
+            attackInstance.Id = id;
+            attackInstance.Balance = Balance.Attacks[id].Balance;
+            attackInstance.StunWaitForSeconds = Balance.StunWaitForSecondsById[id];
 
             attackInstance.GetTransform.position = PlayerTransform.position;
 
@@ -73,8 +78,9 @@ public class PlayerAttackController : MonoBehaviour
 
     public void OnTriggerEnterAttack(PlayerAttackTrigger playerAttackTrigger)
     {
+        float damage = GetItemValueByCurrentLevel(playerAttackTrigger.PlayerAttack.Id);
         MobHolder mobHolder = GetAttackedMobHolder(playerAttackTrigger);
-        mobHolder.GetMobHealth.Damage(playerAttackTrigger.PlayerAttack.Balance.Damage);
+        mobHolder.GetMobHealth.Damage(damage);
         mobHolder.GetRigidbody.AddForce(
                 (mobHolder.GetTransform.position - PlayerTransform.position) *
                 playerAttackTrigger.PlayerAttack.Balance.PushForce);
@@ -84,7 +90,7 @@ public class PlayerAttackController : MonoBehaviour
         DamageTextHolder damageTextInstance = DamageTextPool.Instantiate(DamageTextPrefab);
         damageTextInstance.GetTransform.SetParent(WorldSpaceCanvasTransform, true);
         damageTextInstance.GetTransform.position = mobHolder.GetTransform.position;
-        damageTextInstance.GetText.text = playerAttackTrigger.PlayerAttack.Balance.Damage.ToString();
+        damageTextInstance.GetText.text = damage.ToString();
 
         _ = StartCoroutine(DestroyDelayed(DamageTextPool, Balance.DamageTextDestroyDelayWaitForSeconds,
                     damageTextInstance.GetTransform));

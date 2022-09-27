@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkeletonMobBalance
   m_EditorClassIdentifier: 
   Speed: 1.5
-  MaxHealth: 1
+  MaxHealth: 2
   DeathAnimDuration: 0.67
   Damage: 1
   Exp: 1

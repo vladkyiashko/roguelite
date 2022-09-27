@@ -23,30 +23,30 @@ public class PlayerAttacksBalance : ScriptableObject
         }
     }
 
-    private Dictionary<BasePlayerAttack, WaitForSeconds> _StunWaitForSecondsByAttackPrefab;
-    public Dictionary<BasePlayerAttack, WaitForSeconds> StunWaitForSecondsByAttackPrefab
+    private Dictionary<int, WaitForSeconds> _StunWaitForSecondsById;
+    public Dictionary<int, WaitForSeconds> StunWaitForSecondsById
     {
         get
         {
-            if (_StunWaitForSecondsByAttackPrefab == null)
+            if (_StunWaitForSecondsById == null)
             {
-                InitStunWaitForSecondsByAttackPrefab();
+                InitStunWaitForSecondsById();
             }
 
-            return _StunWaitForSecondsByAttackPrefab;
+            return _StunWaitForSecondsById;
         }
     }
-    private Dictionary<BasePlayerAttack, WaitForSeconds> _DelayWaitForSecondsByAttackPrefab;
-    public Dictionary<BasePlayerAttack, WaitForSeconds> DelayWaitForSecondsByAttackPrefab
+    private Dictionary<int, WaitForSeconds> _DelayWaitForSecondsById;
+    public Dictionary<int, WaitForSeconds> DelayWaitForSecondsById
     {
         get
         {
-            if (_DelayWaitForSecondsByAttackPrefab == null)
+            if (_DelayWaitForSecondsById == null)
             {
-                InitDelayWaitForSecondsByAttackPrefab();
+                InitDelayWaitForSecondsById();
             }
 
-            return _DelayWaitForSecondsByAttackPrefab;
+            return _DelayWaitForSecondsById;
         }
     }
     private WaitForSeconds _AttackDestroyDelayWaitForSeconds;
@@ -67,19 +67,6 @@ public class PlayerAttacksBalance : ScriptableObject
             _DamageTextDestroyDelayWaitForSeconds ??= new(DamageTextDestroyDelay);
 
             return _DamageTextDestroyDelayWaitForSeconds;
-        }
-    }
-    private Dictionary<BasePlayerAttack, BasePlayerAttackBalance> _AttackBalanceByAttackPrefab;
-    public Dictionary<BasePlayerAttack, BasePlayerAttackBalance> AttackBalanceByAttackPrefab
-    {
-        get
-        {
-            if (_AttackBalanceByAttackPrefab == null)
-            {
-                InitAttackBalanceByAttackPrefab();
-            }
-
-            return _AttackBalanceByAttackPrefab;
         }
     }
 
@@ -111,32 +98,21 @@ public class PlayerAttacksBalance : ScriptableObject
         _ = Selector.Build();
     }
 
-    private void InitStunWaitForSecondsByAttackPrefab()
+    private void InitStunWaitForSecondsById()
     {
-        _StunWaitForSecondsByAttackPrefab = new();
+        _StunWaitForSecondsById = new();
         for (int i = 0; i < Attacks.Length; i++)
         {
-            _StunWaitForSecondsByAttackPrefab.Add(Attacks[i].Prefab,
-                    new WaitForSeconds(Attacks[i].Balance.StunDuration));
+            _StunWaitForSecondsById.Add(i, new WaitForSeconds(Attacks[i].Balance.StunDuration));
         }
     }
-
-    private void InitDelayWaitForSecondsByAttackPrefab()
+    
+    private void InitDelayWaitForSecondsById()
     {
-        _DelayWaitForSecondsByAttackPrefab = new();
+        _DelayWaitForSecondsById = new();
         for (int i = 0; i < Attacks.Length; i++)
         {
-            _DelayWaitForSecondsByAttackPrefab.Add(Attacks[i].Prefab,
-                    new WaitForSeconds(Attacks[i].Balance.Delay));
-        }
-    }
-
-    private void InitAttackBalanceByAttackPrefab()
-    {
-        _AttackBalanceByAttackPrefab = new();
-        for (int i = 0; i < Attacks.Length; i++)
-        {
-            _AttackBalanceByAttackPrefab.Add(Attacks[i].Prefab, Attacks[i].Balance);
+            _DelayWaitForSecondsById.Add(i, new WaitForSeconds(Attacks[i].Balance.Delay));
         }
     }
 
