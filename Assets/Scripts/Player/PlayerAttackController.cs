@@ -7,9 +7,9 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private PlayerAttacksBalance Balance;
     [SerializeField] private Transform PlayerTransform;
     [SerializeField] private AbstractMove PlayerMove;
+    [SerializeField] private MobSpawnController MobSpawnController;
     [SerializeField] private GameObject DamageTextPrefab;
-    [SerializeField] private Transform WorldSpaceCanvasTransform;
-    private Vector3 LeftScale = new(-1, 1, 1);
+    [SerializeField] private Transform WorldSpaceCanvasTransform;    
     private readonly List<int> ActiveAttackIds = new();
     private readonly Dictionary<int, int> ItemLevelsByIds = new();
     private readonly Dictionary<int, Coroutine> AttackLoopsById = new();
@@ -27,7 +27,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Start()
     {
-        AddItem(0);   
+        AddItem(3);
     }
 
     public void AddItem(int id)
@@ -62,17 +62,15 @@ public class PlayerAttackController : MonoBehaviour
             yield return Balance.DelayWaitForSecondsById[id];
 
             BasePlayerAttack attackInstance = AttackPool.Instantiate(Balance.Attacks[id].Prefab.gameObject);
+            attackInstance.Pool = AttackPool;
             attackInstance.Id = id;
             attackInstance.Balance = Balance.Attacks[id].Balance;
             attackInstance.StunWaitForSeconds = Balance.StunWaitForSecondsById[id];
-
-            attackInstance.GetTransform.position = PlayerTransform.position;
-
-            attackInstance.GetTransform.localScale =
-                PlayerMove.CurrentFaceDir == AbstractMove.FaceDir.Right ? Vector3.one : LeftScale;
-
-            _ = StartCoroutine(DestroyDelayed(AttackPool, Balance.AttackDestroyDelayWaitForSeconds,
-                        attackInstance.GetTransform));
+            attackInstance.Init(
+                new BasePlayerAttack.InitData(
+                    PlayerMove.CurrentFaceDir, PlayerMove.GetLastMoveDir,
+                    MobSpawnController.GetNearestMobPosition(PlayerTransform.position),
+                    MobSpawnController.GetRandomMobPosition(PlayerTransform.position), PlayerTransform.position));
         }
     }
 

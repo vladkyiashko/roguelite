@@ -8086,6 +8086,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 749937962}
     - target: {fileID: 7294160612856147392, guid: 75340c31915a5f2baaa9b69a5cd2c55a, type: 3}
+      propertyPath: MobSpawnController
+      value: 
+      objectReference: {fileID: 1587603385}
+    - target: {fileID: 7294160612856147392, guid: 75340c31915a5f2baaa9b69a5cd2c55a, type: 3}
       propertyPath: WorldSpaceCanvasTransform
       value: 
       objectReference: {fileID: 1570498864}

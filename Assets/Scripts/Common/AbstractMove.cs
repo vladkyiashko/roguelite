@@ -10,6 +10,8 @@ public abstract class AbstractMove : MonoBehaviour
     [SerializeField] protected AbstractHealth Health;
     [SerializeField] protected MoveEvents Events;
     protected Vector3 MoveDir;
+    private Vector3 LastMoveDir = Vector3.right;
+    public Vector3 GetLastMoveDir => LastMoveDir;
     public FaceDir CurrentFaceDir { get; private set; }
     private bool IsMoving;
 
@@ -40,6 +42,8 @@ public abstract class AbstractMove : MonoBehaviour
         RB.MovePosition(transform.position + (MoveDir * Balance.Speed * Time.fixedDeltaTime));
 
         SetSpriteDir();
+
+        LastMoveDir = MoveDir;
     }
 
     protected virtual void SetSpriteDir()

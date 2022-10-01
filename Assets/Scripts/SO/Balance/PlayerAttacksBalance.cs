@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlayerAttacksBalance : ScriptableObject
 {
     public PlayerItemsBalanceItem[] Attacks;
-    public float AttackDestroyDelay = 0.5f;
     public float DamageTextDestroyDelay = 1f;
     private DynamicRandomSelector<int> Selector;
     public DynamicRandomSelector<int> GetSelector
@@ -47,16 +46,6 @@ public class PlayerAttacksBalance : ScriptableObject
             }
 
             return _DelayWaitForSecondsById;
-        }
-    }
-    private WaitForSeconds _AttackDestroyDelayWaitForSeconds;
-    public WaitForSeconds AttackDestroyDelayWaitForSeconds
-    {
-        get
-        {
-            _AttackDestroyDelayWaitForSeconds ??= new(AttackDestroyDelay);
-
-            return _AttackDestroyDelayWaitForSeconds;
         }
     }
     private WaitForSeconds _DamageTextDestroyDelayWaitForSeconds;

@@ -158,8 +158,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
-  Balance: {fileID: 11400000, guid: 0efd86a7c175885f3bcb9f24f120b405, type: 2}
   Transform: {fileID: 2735558367376758288}
+  AutoDestroyDelay: 0.5
+  DestroyOnHit: 0
+  FlipXScaleFaceDir: {fileID: 2735558367376758288}
+  RotateToMoveDir: {fileID: 0}
+  TranslateToMoveDir:
+    TranslateToMoveDir: 0
+    SpeedMult: 0
+  SpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!95 &2463496751741168504
 Animator:
   serializedVersion: 4
