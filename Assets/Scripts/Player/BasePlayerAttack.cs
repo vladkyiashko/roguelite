@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class BasePlayerAttack : MonoBehaviour
     [SerializeField] private Transform FlipXScaleFaceDir;
     [SerializeField] private Transform RotateToTranslateDir;
     [SerializeField] private TranslateType Translate;
+    [SerializeField] private OffsetData[] Offsets;
     [SerializeField] private float SpeedMult;
     [SerializeField] private Vector3 SpawnOffset;
     private Coroutine AutoDestroyCoroutine;
@@ -72,8 +74,15 @@ public class BasePlayerAttack : MonoBehaviour
                 case TranslateType.randomTargetPosition:
                     dir = (init.RandomTargetPosition - Transform.position).normalized;
                     break;
+                case TranslateType.throwUp:
+                    ThrowUp();
+                    break;
             }
-            StartCoroutine(TranslateCor(dir));
+
+            if (dir != default)
+            {
+                StartCoroutine(TranslateCor(dir));
+            }
 
             if (RotateToTranslateDir != null)
             {
@@ -82,6 +91,14 @@ public class BasePlayerAttack : MonoBehaviour
         }
     }
     
+    private void ThrowUp()
+    {
+        float startLocalY = Transform.localPosition.y;
+        Transform.DOLocalMoveY(startLocalY + Offsets[0].Offset, Offsets[0].Duration).SetEase(Ease.OutSine).OnComplete(
+            () => Transform.DOLocalMoveY(startLocalY + Offsets[1].Offset, Offsets[1].Duration).SetEase(Ease.InSine)
+        );
+    }
+
     private IEnumerator TranslateCor(Vector3 dir)
     {
         while (true)
@@ -128,11 +145,19 @@ public class BasePlayerAttack : MonoBehaviour
     }
 
     [Serializable]
+    public struct OffsetData
+    {
+        public float Offset;
+        public float Duration;
+    }
+
+    [Serializable]
     public enum TranslateType
     {
         none,
         moveDir,
         nearestTargetPosition,
-        randomTargetPosition
+        randomTargetPosition,
+        throwUp
     }
 }

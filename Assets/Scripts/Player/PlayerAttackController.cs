@@ -27,7 +27,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Start()
     {
-        AddItem(3);
+        AddItem(4);
     }
 
     public void AddItem(int id)

@@ -61,4 +61,16 @@ MonoBehaviour:
       Damage: 1
       PushForce: 500
       StunDuration: 0.2
+  - Prefab: {fileID: 2874652830637333935, guid: cd87aaf82065d264a985f191c26f1c01, type: 3}
+    Weight: 1
+    Name: Axe
+    Descr: High damage, high Area scaling.
+    UpgDescrFormat: Base damage up by {0}
+    ValueLevelPow: 1.5
+    Sprite: {fileID: 21300000, guid: 608614c9fac7dc14bb9bc8a058ea6914, type: 3}
+    Balance:
+      Delay: 3
+      Damage: 1
+      PushForce: 500
+      StunDuration: 0.2
   DamageTextDestroyDelay: 1
