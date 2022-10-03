@@ -79,13 +79,13 @@ MonoBehaviour:
   FlipXScaleFaceDir: {fileID: 0}
   RotateToTranslateDir: {fileID: 0}
   Translate: 4
-  Offsets:
+  ThrowUpOffsets:
   - Offset: 2
     Duration: 0.5
   - Offset: -12
     Duration: 2
   SpeedMult: 0
-  SpawnOffset: {x: 0, y: 0, z: 0}
+  SpawnOffsets: []
 --- !u!1 &3786059318635028920
 GameObject:
   m_ObjectHideFlags: 0

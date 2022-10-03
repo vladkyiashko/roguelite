@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BasePlayerAttack : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class BasePlayerAttack : MonoBehaviour
     [SerializeField] private Transform FlipXScaleFaceDir;
     [SerializeField] private Transform RotateToTranslateDir;
     [SerializeField] private TranslateType Translate;
-    [SerializeField] private OffsetData[] Offsets;
+    [SerializeField] private OffsetData[] ThrowUpOffsets;
+    [SerializeField] private ThrowRandomData ThrowRandomValue;
     [SerializeField] private float SpeedMult;
-    [SerializeField] private Vector3 SpawnOffset;
+    [SerializeField] private Vector3[] SpawnOffsets;
     private int HitCount;
     private Coroutine AutoDestroyCoroutine;
     private WaitForSeconds _AutoDestroyDelayWaitForSeconds;
@@ -41,9 +43,7 @@ public class BasePlayerAttack : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {
-        TryStopAutoDestroyCoroutine();
-
+    {        
         OnTriggerEnter.Raise(new PlayerAttackTrigger(this, other.gameObject));
 
         ProcessDestroyOnHitCount();
@@ -60,13 +60,14 @@ public class BasePlayerAttack : MonoBehaviour
 
         if (HitCount >= DestroyOnHitCount)
         {
+            TryStopAutoDestroyCoroutine();
             Pool.Destroy(Transform);
         }
     }
 
     public void Init(InitData init)
     {
-        Transform.position = init.OwnerPosition + SpawnOffset;
+        Transform.position = init.OwnerPosition + GetSpawnOffset();
 
         if (FlipXScaleFaceDir != null)
         {
@@ -90,6 +91,9 @@ public class BasePlayerAttack : MonoBehaviour
                 case TranslateType.throwUp:
                     ThrowUp();
                     break;
+                case TranslateType.throwRandom:
+                    ThrowRandom(init.OwnerPosition);
+                    break;
             }
 
             if (dir != default)
@@ -104,12 +108,37 @@ public class BasePlayerAttack : MonoBehaviour
         }
     }
     
+    private Vector3 GetSpawnOffset()
+    {
+        if (SpawnOffsets.Length == 0)
+        {
+            return Vector3.zero;
+        }
+
+        if (SpawnOffsets.Length == 1)
+        {
+            return SpawnOffsets[0];
+        }
+
+        float x = UnityEngine.Random.Range(SpawnOffsets[0].x, SpawnOffsets[1].x);
+        float y = UnityEngine.Random.Range(SpawnOffsets[0].y, SpawnOffsets[1].y);
+        return new Vector3(x, y);
+    }
+
     private void ThrowUp()
     {
         float startLocalY = Transform.localPosition.y;
-        Transform.DOLocalMoveY(startLocalY + Offsets[0].Offset, Offsets[0].Duration).SetEase(Ease.OutSine).OnComplete(
-            () => Transform.DOLocalMoveY(startLocalY + Offsets[1].Offset, Offsets[1].Duration).SetEase(Ease.InSine)
+        Transform.DOLocalMoveY(startLocalY + ThrowUpOffsets[0].Offset, ThrowUpOffsets[0].Duration).SetEase(Ease.OutSine).OnComplete(
+            () => Transform.DOLocalMoveY(startLocalY + ThrowUpOffsets[1].Offset, ThrowUpOffsets[1].Duration).SetEase(Ease.InSine)
         );
+    }
+
+    private void ThrowRandom(Vector3 ownerPosition)
+    {
+        float targetXOffset = UnityEngine.Random.Range(ThrowRandomValue.TargetOffsets[0].x, ThrowRandomValue.TargetOffsets[1].x);
+        float targetYOffet = UnityEngine.Random.Range(ThrowRandomValue.TargetOffsets[0].y, ThrowRandomValue.TargetOffsets[1].y);
+        Vector3 target = ownerPosition + new Vector3(targetXOffset, targetYOffet);
+        Transform.DOLocalMove(target, ThrowRandomValue.Duration).OnComplete(() => ThrowRandomValue.OnMoveComplete.Invoke());
     }
 
     private IEnumerator TranslateCor(Vector3 dir)
@@ -165,12 +194,21 @@ public class BasePlayerAttack : MonoBehaviour
     }
 
     [Serializable]
+    public struct ThrowRandomData
+    {
+        public Vector3[] TargetOffsets;
+        public float Duration;
+        public UnityEvent OnMoveComplete;
+    }
+
+    [Serializable]
     public enum TranslateType
     {
         none,
         moveDir,
         nearestTargetPosition,
         randomTargetPosition,
-        throwUp
+        throwUp,
+        throwRandom
     }
 }
