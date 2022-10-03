@@ -9,13 +9,14 @@ public class BasePlayerAttack : MonoBehaviour
     [SerializeField] private PlayerAttackTriggerGameEvent OnTriggerEnter;
     [SerializeField] private Transform Transform;    
     [SerializeField] private float AutoDestroyDelay = 1f;
-    [SerializeField] private bool DestroyOnHit;
+    [SerializeField] private int DestroyOnHitCount;
     [SerializeField] private Transform FlipXScaleFaceDir;
     [SerializeField] private Transform RotateToTranslateDir;
     [SerializeField] private TranslateType Translate;
     [SerializeField] private OffsetData[] Offsets;
     [SerializeField] private float SpeedMult;
     [SerializeField] private Vector3 SpawnOffset;
+    private int HitCount;
     private Coroutine AutoDestroyCoroutine;
     private WaitForSeconds _AutoDestroyDelayWaitForSeconds;
     private WaitForSeconds AutoDestroyDelayWaitForSeconds
@@ -45,7 +46,19 @@ public class BasePlayerAttack : MonoBehaviour
 
         OnTriggerEnter.Raise(new PlayerAttackTrigger(this, other.gameObject));
 
-        if (DestroyOnHit)
+        ProcessDestroyOnHitCount();
+    }
+
+    private void ProcessDestroyOnHitCount()
+    {
+        if (DestroyOnHitCount <= 0)
+        {
+            return;
+        }
+
+        HitCount++;
+
+        if (HitCount >= DestroyOnHitCount)
         {
             Pool.Destroy(Transform);
         }

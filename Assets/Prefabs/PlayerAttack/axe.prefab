@@ -75,7 +75,7 @@ MonoBehaviour:
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
   Transform: {fileID: 2735558367376758288}
   AutoDestroyDelay: 3
-  DestroyOnHit: 1
+  DestroyOnHitCount: 3
   FlipXScaleFaceDir: {fileID: 0}
   RotateToTranslateDir: {fileID: 0}
   Translate: 4
@@ -128,6 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3254294929085042815}
   - component: {fileID: 6160813065177549753}
+  - component: {fileID: 1573960682498109172}
   m_Layer: 8
   m_Name: sprite (1)
   m_TagString: Untagged
@@ -202,3 +203,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1573960682498109172
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4342153226563658427}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 63ee0ec04f86b1e4c96801c69bc1ee22, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -75,10 +75,11 @@ MonoBehaviour:
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
   Transform: {fileID: 2735558367376758288}
   AutoDestroyDelay: 2
-  DestroyOnHit: 1
+  DestroyOnHitCount: 1
   FlipXScaleFaceDir: {fileID: 0}
   RotateToTranslateDir: {fileID: 6537286509759720856}
   Translate: 1
+  Offsets: []
   SpeedMult: 5
   SpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &3786059318635028920
