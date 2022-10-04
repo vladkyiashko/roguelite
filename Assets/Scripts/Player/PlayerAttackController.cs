@@ -27,7 +27,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void Start()
     {
-        AddItem(5);
+        AddItem(6);
     }
 
     public void AddItem(int id)
@@ -70,7 +70,7 @@ public class PlayerAttackController : MonoBehaviour
                 new BasePlayerAttack.InitData(
                     PlayerMove.CurrentFaceDir, PlayerMove.GetLastMoveDir,
                     MobSpawnController.GetNearestMobPosition(PlayerTransform.position),
-                    MobSpawnController.GetRandomMobPosition(PlayerTransform.position), PlayerTransform.position));
+                    MobSpawnController.GetRandomMobPosition(PlayerTransform.position), PlayerTransform));
         }
     }
 

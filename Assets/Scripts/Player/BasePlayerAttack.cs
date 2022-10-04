@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,9 +17,11 @@ public class BasePlayerAttack : MonoBehaviour
     [SerializeField] private TranslateType Translate;
     [SerializeField] private OffsetData[] ThrowUpOffsets;
     [SerializeField] private ThrowRandomData ThrowRandomValue;
+    [SerializeField] private PathData OrbitData;
     [SerializeField] private float SpeedMult;
     [SerializeField] private Vector3[] SpawnOffsets;
     private int HitCount;
+    private List<Tween> ActiveTweens = new();
     private Coroutine AutoDestroyCoroutine;
     private WaitForSeconds _AutoDestroyDelayWaitForSeconds;
     private WaitForSeconds AutoDestroyDelayWaitForSeconds
@@ -67,7 +70,7 @@ public class BasePlayerAttack : MonoBehaviour
 
     public void Init(InitData init)
     {
-        Transform.position = init.OwnerPosition + GetSpawnOffset();
+        Transform.position = init.OwnerTransform.position + GetSpawnOffset();
 
         if (FlipXScaleFaceDir != null)
         {
@@ -92,7 +95,10 @@ public class BasePlayerAttack : MonoBehaviour
                     ThrowUp();
                     break;
                 case TranslateType.throwRandom:
-                    ThrowRandom(init.OwnerPosition);
+                    ThrowRandom(init.OwnerTransform.position);
+                    break;
+                case TranslateType.orbit:
+                    Orbit(init.OwnerTransform);
                     break;
             }
 
@@ -141,6 +147,19 @@ public class BasePlayerAttack : MonoBehaviour
         Transform.DOLocalMove(target, ThrowRandomValue.Duration).OnComplete(() => ThrowRandomValue.OnMoveComplete.Invoke());
     }
 
+    private void Orbit(Transform ownerTransform)
+    {
+        Transform.SetParent(ownerTransform);
+
+        Vector3[] waypoints = new Vector3[OrbitData.Waypoints.Length];
+        for (int i = 0; i < OrbitData.Waypoints.Length; i++)
+        {
+            waypoints[i] = OrbitData.Waypoints[i];
+        }
+        Tween pathTween = Transform.DOLocalPath(waypoints, OrbitData.Duration, PathType.CatmullRom).SetEase(Ease.Linear).SetLoops(-1);
+        ActiveTweens.Add(pathTween);
+    }
+
     private IEnumerator TranslateCor(Vector3 dir)
     {
         while (true)
@@ -164,6 +183,11 @@ public class BasePlayerAttack : MonoBehaviour
     private IEnumerator DestroyDelayed(WaitForSeconds delay)
     {
         yield return delay;
+        for (int i = 0; i < ActiveTweens.Count; i++)
+        {
+            ActiveTweens[i].Kill();
+        }
+        ActiveTweens.Clear();
         Pool.Destroy(Transform);
         AutoDestroyCoroutine = null;
     }
@@ -174,15 +198,15 @@ public class BasePlayerAttack : MonoBehaviour
         public Vector3 MoveDir;
         public Vector3 NearestTargetPosition;
         public Vector3 RandomTargetPosition;
-        public Vector3 OwnerPosition;
+        public Transform OwnerTransform;
         public InitData(AbstractMove.FaceDir faceDir, Vector3 moveDir,
-            Vector3 nearestTargetPosition, Vector3 randomTargetPosition, Vector3 ownerPosition)
+            Vector3 nearestTargetPosition, Vector3 randomTargetPosition, Transform ownerTransform)
         {
             FaceDir = faceDir;
             MoveDir = moveDir;
             NearestTargetPosition = nearestTargetPosition;
             RandomTargetPosition = randomTargetPosition;
-            OwnerPosition = ownerPosition;
+            OwnerTransform = ownerTransform;
         }
     }
 
@@ -202,6 +226,13 @@ public class BasePlayerAttack : MonoBehaviour
     }
 
     [Serializable]
+    public struct PathData
+    {
+        public Vector3[] Waypoints;
+        public float Duration;
+    }
+
+    [Serializable]
     public enum TranslateType
     {
         none,
@@ -209,6 +240,7 @@ public class BasePlayerAttack : MonoBehaviour
         nearestTargetPosition,
         randomTargetPosition,
         throwUp,
-        throwRandom
+        throwRandom,
+        orbit
     }
 }

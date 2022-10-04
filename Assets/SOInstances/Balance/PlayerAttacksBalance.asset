@@ -85,4 +85,16 @@ MonoBehaviour:
       Damage: 1
       PushForce: 1000
       StunDuration: 0.3
+  - Prefab: {fileID: 2874652830637333935, guid: adb436127760eb04b860da7cd8e415f6, type: 3}
+    Weight: 1
+    Name: King Bible
+    Descr: Orbits around the character.
+    UpgDescrFormat: Base damage up by {0}
+    ValueLevelPow: 1.5
+    Sprite: {fileID: 21300008, guid: ddf8838d0a06d8d4c9dec9e3bed69260, type: 3}
+    Balance:
+      Delay: 4
+      Damage: 1
+      PushForce: 1000
+      StunDuration: 0.3
   DamageTextDestroyDelay: 1

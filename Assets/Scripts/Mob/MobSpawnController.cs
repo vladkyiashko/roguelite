@@ -70,6 +70,11 @@ public class MobSpawnController : MonoBehaviour
 
     public Vector3 GetRandomMobPosition(Vector3 comparePosition)
     {
+        if (MobTransforms.Count == 0)
+        {
+            return Vector3.zero;
+        }
+
         List<Transform> list = new();
         for (int i = 0; i < MobTransforms.Count; i++)
         {

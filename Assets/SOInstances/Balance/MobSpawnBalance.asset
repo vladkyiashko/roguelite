@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad4bed5022ae53a8b84dccf1f671936, type: 3}
   m_Name: MobSpawnBalance
   m_EditorClassIdentifier: 
-  InitialSpawnCount: 1
+  InitialSpawnCount: 0
   SpawnDelay: 9999
   Mobs:
   - Prefab: {fileID: 3234399648206545692, guid: 5da61e7b30286d9aa93b6e46414e096d, type: 3}
