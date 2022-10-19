@@ -47,20 +47,42 @@ public class PlayerAttackController : MonoBehaviour
 
     public float GetItemValueByLevel(int id, int level)
     {
-        return Mathf.Pow(Balance.Attacks[id].Balance.Damage * level, Balance.Attacks[id].ValueLevelPow);
+        return Mathf.Pow(Balance.Attacks[id].Balance.BaseDamage * level, Balance.Attacks[id].ValueLevelPow);
+    }
+
+    public bool IsChance(int id)
+    {
+        return Random.value < Balance.Attacks[id].Balance.Chance / 100f;
     }
 
     public float GetItemValueByCurrentLevel(int id)
     {
-        return GetItemValueByLevel(id, ItemLevelsByIds[id]);
+        float damage = GetItemValueByLevel(id, ItemLevelsByIds[id]);
+
+        if (Balance.Attacks[id].Balance.CriticalMultiplier > 0 && IsChance(id))
+        {
+            damage *= Balance.Attacks[id].Balance.CriticalMultiplier;
+        }
+
+        return damage;
     }
 
     private IEnumerator AttackLoop(int id)
     {
         while (true)
         {
-            yield return Balance.DelayWaitForSecondsById[id];
+            yield return GetNextAttackDelay(id);
 
+            StartCoroutine(CreateAttackAmount(id));
+        }
+    }
+
+    private IEnumerator CreateAttackAmount(int id)
+    {
+        int amount = GetAmount(id);
+
+        for (int i = 0; i < amount; i++)
+        {
             BasePlayerAttack attackInstance = AttackPool.Instantiate(Balance.Attacks[id].Prefab.gameObject);
             attackInstance.Pool = AttackPool;
             attackInstance.Id = id;
@@ -70,8 +92,27 @@ public class PlayerAttackController : MonoBehaviour
                 new BasePlayerAttack.InitData(
                     PlayerMove.CurrentFaceDir, PlayerMove.GetLastMoveDir,
                     MobSpawnController.GetNearestMobPosition(PlayerTransform.position),
-                    MobSpawnController.GetRandomMobPosition(PlayerTransform.position), PlayerTransform));
+                    MobSpawnController.GetRandomMobPosition(PlayerTransform.position),
+                    PlayerTransform, i, amount));
+
+            if (i != Balance.Attacks[id].Balance.Amount - 1)
+            {
+                yield return attackInstance.ProjectileIntervalWaitForSeconds;
+            }            
         }
+    }
+
+    private int GetAmount(int id)
+    {
+        int amount = Mathf.Clamp(Balance.Attacks[id].Balance.Amount, 1, Balance.Attacks[id].Balance.PoolLimit);
+        return amount; // todo use upgrade amount and player stat amount
+    }
+
+    private WaitForSeconds GetNextAttackDelay(int id)
+    {
+        return new WaitForSeconds(Balance.Attacks[id].Balance.CooldownAfterDuration ?
+            Balance.Attacks[id].Balance.Duration + Balance.Attacks[id].Balance.Cooldown
+            : Balance.Attacks[id].Balance.Cooldown);
     }
 
     public void OnTriggerEnterAttack(PlayerAttackTrigger playerAttackTrigger)
@@ -81,7 +122,7 @@ public class PlayerAttackController : MonoBehaviour
         mobHolder.GetMobHealth.Damage(damage);
         mobHolder.GetRigidbody.AddForce(
                 (mobHolder.GetTransform.position - PlayerTransform.position) *
-                playerAttackTrigger.PlayerAttack.Balance.PushForce);
+                playerAttackTrigger.PlayerAttack.Balance.Knockback * 1000f);
 
         mobHolder.GetMobStateController.Stun(playerAttackTrigger.PlayerAttack.StunWaitForSeconds);
 

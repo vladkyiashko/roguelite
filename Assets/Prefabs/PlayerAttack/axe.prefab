@@ -74,18 +74,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
   Transform: {fileID: 2735558367376758288}
-  AutoDestroyDelay: 3
+  AutoDestroyDelay: 2
   DestroyOnHitCount: 3
-  FlipXScaleFaceDir: {fileID: 0}
+  FlipValue:
+    FlipScale: {fileID: 0}
+    AlterIterFlipXScale: 0
+    AlterIterFlipYScale: 0
   RotateToTranslateDir: {fileID: 0}
   Translate: 4
-  ThrowUpOffsets:
-  - Offset: 2
-    Duration: 0.5
-  - Offset: -12
-    Duration: 2
-  SpeedMult: 0
+  ThrowUpValue:
+    Widths:
+    - 0
+    - 2
+    - 4
+    - 8
+    - 12
+    - 12
+    - 12
+    - 8
+    - 4
+    - 0
+    Heights:
+    - 9
+    - 9
+    - 8.5
+    - 8
+    - 7.5
+    - 7
+    - 6
+    - 5
+    - 3
+    - 1
+    Durations:
+    - 2.5
+    - 2.5
+    - 2.5
+    - 2.5
+    - 2.5
+    - 2.5
+    - 2.5
+    - 2.75
+    - 3
+    - 4
+  ThrowRandomValue:
+    TargetOffsets: []
+    Duration: 0
+    OnMoveComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  OrbitData:
+    Waypoints: []
+    Duration: 0
   SpawnOffsets: []
+  AreaStatData:
+    ScaleTransform: {fileID: 0}
+    ScaleType: 0
 --- !u!1 &3786059318635028920
 GameObject:
   m_ObjectHideFlags: 0

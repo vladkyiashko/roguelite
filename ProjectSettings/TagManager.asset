@@ -18,8 +18,8 @@ TagManager:
   - PlayerAttack
   - MobTouch
   - Loot
-  - 
-  - 
+  - Wall
+  - PlayerAttackBlockByWall
   - 
   - 
   - 

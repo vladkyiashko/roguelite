@@ -54,8 +54,10 @@ public class ExpController : MonoBehaviour
 
         ItemInfoByListIndex.Clear();
 
-        int upgradesCount = LevelUpBalance.UpgradesCount;
+        List<int> maxLevelIds = new();
+        RemoveMaxLevelItems(maxLevelIds);
 
+        int upgradesCount = LevelUpBalance.UpgradesCount;
         int[] ids = new int[upgradesCount];
 
         for (int i = 0; i < upgradesCount; i++)
@@ -68,6 +70,11 @@ public class ExpController : MonoBehaviour
                 ids[i] = id;
                 bool isNew = !PlayerAttackController.GetActiveAttackIds.Contains(id);
                 int newItemLevel = isNew ? 1 : PlayerAttackController.GetItemLevelsByIds[id] + 1;
+
+                if (PlayerAttackController.GetItemLevelsByIds[id] < PlayerAttacksBalance.Attacks[id].Balance.MaxLevel)
+                {
+
+                }
                 float newValue = PlayerAttackController.GetItemValueByLevel(id, newItemLevel);
                 ItemInfoByListIndex.Add(i, new ItemInfo(type, id));
                 BroadcastLevelUpItem(PlayerAttacksBalance.Attacks[id], isNew, newItemLevel, newValue, i);
@@ -76,7 +83,20 @@ public class ExpController : MonoBehaviour
         }
 
         PlayerAttacksBalance.SelectorAddIds(ids);
-    }    
+        PlayerAttacksBalance.SelectorAddIds(maxLevelIds.ToArray());
+    }
+
+    private void RemoveMaxLevelItems(List<int> maxLevelIds)
+    {
+        foreach (int id in PlayerAttackController.GetActiveAttackIds)
+        {
+            if (PlayerAttackController.GetItemLevelsByIds[id] >= PlayerAttacksBalance.Attacks[id].Balance.MaxLevel)
+            {
+                PlayerAttacksBalance.SelectorRemoveId(new int[] { id });
+                maxLevelIds.Add(id);
+            }
+        }
+    }
 
     private void BroadcastLevelUpItem(PlayerAttacksBalance.PlayerItemsBalanceItem item, bool isNew, int newItemLevel, float newValue, int listIndex)
     {

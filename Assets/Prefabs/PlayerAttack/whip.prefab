@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &557190359082064203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 307721933348155189}
+  m_Layer: 8
+  m_Name: wrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &307721933348155189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557190359082064203}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2735558365703228302}
+  m_Father: {fileID: 2735558367376758288}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2735558365703228301
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,6 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2735558365703228302}
   - component: {fileID: 2735558365703228303}
+  - component: {fileID: 1477135194556515558}
+  - component: {fileID: 7706558257923991724}
   m_Layer: 8
   m_Name: sprite
   m_TagString: Untagged
@@ -25,11 +59,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2735558365703228301}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.66, y: -0.09, z: 0}
+  m_LocalPosition: {x: 0.931, y: -0.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2735558367376758288}
+  m_Father: {fileID: 307721933348155189}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2735558365703228303
@@ -84,6 +118,59 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &1477135194556515558
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2735558365703228301}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.86, y: 0.44}
+    newSize: {x: 0.58, y: 0.19}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.86, y: 0.44}
+  m_EdgeRadius: 0
+--- !u!114 &7706558257923991724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2735558365703228301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d509a37ce41c7346a69a69a7190362e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTriggerEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2874652830637333935}
+        m_TargetAssemblyTypeName: BasePlayerAttack, Assembly-CSharp
+        m_MethodName: OnTriggerEnter2D
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2735558367376758295
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,11 +180,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2735558367376758288}
-  - component: {fileID: 1036465458166705464}
   - component: {fileID: 2874652830637333935}
   - component: {fileID: 2463496751741168504}
   m_Layer: 8
-  m_Name: melee-slash
+  m_Name: whip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,36 +201,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2735558365703228302}
+  - {fileID: 307721933348155189}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1036465458166705464
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2735558367376758295}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.66, y: -0.09}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.86, y: 0.44}
-    newSize: {x: 0.58, y: 0.19}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.86, y: 0.44}
-  m_EdgeRadius: 0
 --- !u!114 &2874652830637333935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,14 +219,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
   Transform: {fileID: 2735558367376758288}
-  AutoDestroyDelay: 0.5
-  DestroyOnHit: 0
-  FlipXScaleFaceDir: {fileID: 2735558367376758288}
-  RotateToMoveDir: {fileID: 0}
-  TranslateToMoveDir:
-    TranslateToMoveDir: 0
-    SpeedMult: 0
-  SpawnOffset: {x: 0, y: 0, z: 0}
+  AutoDestroyDelay: 0.34
+  DestroyOnHitCount: 0
+  FlipValue:
+    FlipScale: {fileID: 2735558367376758288}
+    AlterIterFlipXScale: 1
+    AlterIterFlipYScale: 1
+  RotateToTranslateDir: {fileID: 0}
+  Translate: 0
+  ThrowUpOffsets: []
+  ThrowRandomValue:
+    TargetOffsets: []
+    Duration: 0
+    OnMoveComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  OrbitData:
+    Waypoints: []
+    Duration: 0
+  SpawnOffsets:
+  - {x: -0.264, y: 0, z: 0}
+  AreaStatData:
+    ScaleTransform: {fileID: 307721933348155189}
+    ScaleType: 1
 --- !u!95 &2463496751741168504
 Animator:
   serializedVersion: 4

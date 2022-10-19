@@ -35,19 +35,6 @@ public class PlayerAttacksBalance : ScriptableObject
             return _StunWaitForSecondsById;
         }
     }
-    private Dictionary<int, WaitForSeconds> _DelayWaitForSecondsById;
-    public Dictionary<int, WaitForSeconds> DelayWaitForSecondsById
-    {
-        get
-        {
-            if (_DelayWaitForSecondsById == null)
-            {
-                InitDelayWaitForSecondsById();
-            }
-
-            return _DelayWaitForSecondsById;
-        }
-    }
     private WaitForSeconds _DamageTextDestroyDelayWaitForSeconds;
     public WaitForSeconds DamageTextDestroyDelayWaitForSeconds
     {
@@ -72,7 +59,7 @@ public class PlayerAttacksBalance : ScriptableObject
     {
         for (int i = 0; i < ids.Length; i++)
         {
-            Selector.Add(ids[i], Attacks[ids[i]].Weight);
+            Selector.Add(ids[i], Attacks[ids[i]].Balance.Rarity);
         }
         _ = Selector.Build();
     }
@@ -82,7 +69,7 @@ public class PlayerAttacksBalance : ScriptableObject
         Selector = new DynamicRandomSelector<int>();
         for (int i = 0; i < Attacks.Length; i++)
         {
-            Selector.Add(i, Attacks[i].Weight);
+            Selector.Add(i, Attacks[i].Balance.Rarity);
         }
         _ = Selector.Build();
     }
@@ -96,20 +83,10 @@ public class PlayerAttacksBalance : ScriptableObject
         }
     }
     
-    private void InitDelayWaitForSecondsById()
-    {
-        _DelayWaitForSecondsById = new();
-        for (int i = 0; i < Attacks.Length; i++)
-        {
-            _DelayWaitForSecondsById.Add(i, new WaitForSeconds(Attacks[i].Balance.Delay));
-        }
-    }
-
     [Serializable]
     public struct PlayerItemsBalanceItem
     {
         public BasePlayerAttack Prefab;
-        public int Weight;
         public string Name;
         public string Descr;
         public string UpgDescrFormat;

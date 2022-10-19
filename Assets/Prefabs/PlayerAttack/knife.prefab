@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2735558367376758288}
   - component: {fileID: 1036465458166705464}
   - component: {fileID: 2874652830637333935}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,13 +75,29 @@ MonoBehaviour:
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
   Transform: {fileID: 2735558367376758288}
   AutoDestroyDelay: 2
-  DestroyOnHitCount: 1
-  FlipXScaleFaceDir: {fileID: 0}
+  FlipValue:
+    FlipScale: {fileID: 0}
+    AlterIterFlipXScale: 0
+    AlterIterFlipYScale: 0
   RotateToTranslateDir: {fileID: 6537286509759720856}
   Translate: 1
-  Offsets: []
-  SpeedMult: 5
-  SpawnOffset: {x: 0, y: 0, z: 0}
+  ThrowUpValue:
+    Widths: []
+    Heights: []
+    Durations: []
+  ThrowRandomValue:
+    TargetOffsets: []
+    Duration: 0
+    OnMoveComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  OrbitData:
+    Waypoints: []
+    Duration: 0
+  SpawnOffsets: []
+  AreaStatData:
+    ScaleTransform: {fileID: 0}
+    ScaleType: 0
 --- !u!1 &3786059318635028920
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6537286509759720856}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: sprite_wrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3254294929085042815}
   - component: {fileID: 6160813065177549753}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

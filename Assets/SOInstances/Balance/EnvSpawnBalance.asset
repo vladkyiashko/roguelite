@@ -17,5 +17,5 @@ MonoBehaviour:
   - Prefab: {fileID: 4503860094781467935, guid: 726f39e6d8e46eff1a9e4ecef8e19cd2, type: 3}
     Weight: 1
   - Prefab: {fileID: 4503860094781467935, guid: 10c5a0a8900df1fd2afc67df658e467e, type: 3}
-    Weight: 1
+    Weight: 0
   ActiveZonesCountDimensions: {x: 5, y: 5}

@@ -74,12 +74,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnTriggerEnter: {fileID: 11400000, guid: a23ef28bbc161be50af29b94d6d1eb94, type: 2}
   Transform: {fileID: 2735558367376758288}
-  AutoDestroyDelay: 3
-  DestroyOnHitCount: 0
-  FlipXScaleFaceDir: {fileID: 0}
+  AutoDestroyDelay: 0
+  FlipValue:
+    FlipScale: {fileID: 0}
+    AlterIterFlipXScale: 0
+    AlterIterFlipYScale: 0
   RotateToTranslateDir: {fileID: 0}
   Translate: 6
-  ThrowUpOffsets: []
+  ThrowUpValue:
+    Widths: []
+    Heights: []
+    Durations: []
   ThrowRandomValue:
     TargetOffsets: []
     Duration: 0
@@ -97,9 +102,28 @@ MonoBehaviour:
     - {x: 0, y: 1.5, z: 0}
     - {x: 1.5, y: 0, z: 0}
     Duration: 5
-  SpeedMult: 0
   SpawnOffsets:
   - {x: 1.5, y: 0, z: 0}
+  AreaStatData:
+    ScaleTransform: {fileID: 2735558367376758288}
+    ScaleType: 3
+  PreDestroyData:
+    PreDestroyTime: 0.5
+    OnPreDestroy:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3684323884492281474}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: out
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3786059318635028920
 GameObject:
   m_ObjectHideFlags: 0
